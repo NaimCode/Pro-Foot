@@ -6,3 +6,13 @@ Color bgColor = const Color(0xFF22252D);
 Color primaryColor = const Color(0xFF373D41);
 Color secondaryColor = const Color(0xFFF20028);
 Color borderColor = const Color(0xFF606168);
+
+ThemeData appTheme = ThemeData(
+  primaryColor: primaryColor,
+  scaffoldBackgroundColor: bgColor,
+
+  // colorScheme: ColorScheme.fromSwatch().copyWith(secondary: secondaryColor),
+  brightness: Brightness.dark,
+  dividerColor: borderColor,
+  applyElevationOverlayColor: true,
+);
