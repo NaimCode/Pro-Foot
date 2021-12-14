@@ -10,7 +10,10 @@ Color borderColor = const Color(0xFF606168);
 ThemeData appTheme = ThemeData(
   primaryColor: primaryColor,
   scaffoldBackgroundColor: bgColor,
-
+  appBarTheme: AppBarTheme(
+    backgroundColor: bgColor,
+    elevation: 0.0,
+  ),
   // colorScheme: ColorScheme.fromSwatch().copyWith(secondary: secondaryColor),
   brightness: Brightness.dark,
   dividerColor: borderColor,

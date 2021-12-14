@@ -14,7 +14,7 @@ class _MenuBarState extends State<MenuBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
+      width: 120,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         border: Border(
@@ -24,20 +24,32 @@ class _MenuBarState extends State<MenuBar> {
       child: Column(
         children: [
           const Logo(),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-                border: Border(
-              bottom: BorderSide(
-                  color: Theme.of(context).dividerColor.withOpacity(0.50)),
-              top: BorderSide(
-                  color: Theme.of(context).dividerColor.withOpacity(0.50)),
-            )),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: listMenu.map((e) => MenuItem(menu: e)).toList(),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                  border: Border(
+                bottom: BorderSide(
+                    color: Theme.of(context).dividerColor.withOpacity(0.50)),
+                top: BorderSide(
+                    color: Theme.of(context).dividerColor.withOpacity(0.50)),
+              )),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: listMenu.map((e) => MenuItem(menu: e)).toList(),
+                ),
+              ),
             ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 5),
+            child: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.settings,
+                    color:
+                        Theme.of(context).iconTheme.color!.withOpacity(0.4))),
           )
         ],
       ),
