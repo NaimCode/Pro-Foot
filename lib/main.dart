@@ -1,4 +1,5 @@
 import 'package:api_football/Routes/404.dart';
+import 'package:api_football/Routes/Pays/pays.dart';
 import 'package:api_football/Utils/Theme.dart';
 import 'package:api_football/Widgets/page.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,12 @@ class Main extends StatelessWidget {
         GetPage(
           name: "/",
           page: () => const Root(title: "Home", page: Home()),
+          transition: Transition.leftToRight,
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+        GetPage(
+          name: "/pays",
+          page: () => const Root(title: "Pays", page: PagePays()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
