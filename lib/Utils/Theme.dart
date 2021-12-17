@@ -14,8 +14,11 @@ ThemeData appTheme = ThemeData(
     backgroundColor: bgColor,
     elevation: 0.0,
   ),
+
   // colorScheme: ColorScheme.fromSwatch().copyWith(secondary: secondaryColor),
   brightness: Brightness.dark,
   dividerColor: borderColor,
+
+  accentColor: secondaryColor,
   applyElevationOverlayColor: true,
 );

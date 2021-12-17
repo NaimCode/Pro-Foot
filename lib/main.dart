@@ -22,7 +22,7 @@ class Main extends StatelessWidget {
       initialRoute: "/",
       unknownRoute: GetPage(
           name: "/404",
-          page: () => const Root(title: "404", page: PageNotFound()),
+          page: () => const Root( page: PageNotFound()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500)),
       theme: appTheme,
@@ -30,31 +30,31 @@ class Main extends StatelessWidget {
       getPages: [
         GetPage(
           name: "/",
-          page: () => const Root(title: "Home", page: Home()),
+          page: () => const Root( page: Home()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
         GetPage(
           name: "/pays",
-          page: () => const Root(title: "Pays", page: PagePays()),
+          page: () => const Root(page: PagePays()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
         GetPage(
           name: "/transferts",
-          page: () => const Root(title: "Transferts", page: PageNotFound()),
+          page: () => const Root(page: PageNotFound()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
         GetPage(
           name: "/versus",
-          page: () => const Root(title: "Versus", page: PageNotFound()),
+          page: () => const Root(page: PageNotFound()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
         GetPage(
           name: "/joueurs",
-          page: () => const Root(title: "Joueurs", page: PageNotFound()),
+          page: () => const Root(page: PageNotFound()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),

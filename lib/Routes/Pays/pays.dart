@@ -23,28 +23,70 @@ class _PagePaysState extends State<PagePays> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: futureCoutryList,
-        builder: (context, snapshot) {
-          List<Country> courtries = [];
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text('Waiting');
-          }
+    return Scaffold(
+      appBar: PreferredSize(
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Pays",
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              Expanded(
+                  child: Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(15)),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 100),
+                child: Form(
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                            tooltip: "Rechercher",
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onPressed: () {},
+                            icon: const Icon(Icons.search)),
+                        hintText: "Recherche",
+                        contentPadding: const EdgeInsets.only(top: 15),
+                        border: InputBorder.none),
+                  ),
+                ),
+              )),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.logout))
+            ],
+          ),
+        ),
+        preferredSize: const Size.fromHeight(70),
+      ),
+      body: FutureBuilder(
+          future: futureCoutryList,
+          builder: (context, snapshot) {
+            List<Country> courtries = [];
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text('Waiting');
+            }
 
-          if (snapshot.hasData) {
-            courtries = CountryList.fromLocalJson(snapshot.data!.toString())
-                .countriesList!;
-          }
-          return GridView.builder(
-              controller: ScrollController(),
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 250,
-                  childAspectRatio: 3 / 2,
-                  crossAxisSpacing: 40,
-                  mainAxisSpacing: 40),
-              itemCount: 40,
-              itemBuilder: (context, index) =>
-                  CountryItem(country: courtries[index]));
-        });
+            if (snapshot.hasData) {
+              courtries = CountryList.fromLocalJson(snapshot.data!.toString())
+                  .countriesList!;
+            }
+            return GridView.builder(
+                controller: ScrollController(),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 250,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 40,
+                    mainAxisSpacing: 40),
+                itemCount: 40,
+                itemBuilder: (context, index) =>
+                    CountryItem(country: courtries[index]));
+          }),
+    );
   }
 }
