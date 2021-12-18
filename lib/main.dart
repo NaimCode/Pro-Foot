@@ -22,7 +22,7 @@ class Main extends StatelessWidget {
       initialRoute: "/",
       unknownRoute: GetPage(
           name: "/404",
-          page: () => const Root( page: PageNotFound()),
+          page: () => const Root(page: PageNotFound()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500)),
       theme: appTheme,
@@ -30,13 +30,13 @@ class Main extends StatelessWidget {
       getPages: [
         GetPage(
           name: "/",
-          page: () => const Root( page: Home()),
+          page: () => const Root(page: Home()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
         GetPage(
           name: "/pays",
-          page: () => const Root(page: PagePays()),
+          page: () => Root(page: PagePays()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
