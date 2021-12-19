@@ -1,25 +1,16 @@
+import 'dart:convert';
+
 import 'package:api_football/Models/league.dart';
+import 'package:api_football/Utils/api.dart';
 import 'package:api_football/Utils/convertion.dart';
+import 'package:api_football/Widgets/constants/loading.dart';
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
 
-List<String> _paysRecommandation = [
-  "Belgique",
-  "Brésil",
-  "Égypte",
-  "Angleterre",
-  "Allemagne",
-  "France",
-  "Italie",
-  "Maroc",
-  "Portugal",
-  "Espagne",
-];
-
-late Future<String> _futureCoutryList;
+late Future<String> _futureLeagueList;
 List<League> _initLeagues = [];
 RxList<dynamic> _leagues = [].obs;
-
+RxString _query = "".obs;
 RxString _title = "Recommandations".obs;
 
 TextEditingController _rechercheController = TextEditingController();
@@ -32,14 +23,29 @@ class Championants extends StatefulWidget {
 }
 
 class _ChampionantsState extends State<Championants> {
+  API api = API();
+  RxBool isLoaing = false.obs;
+
+  recherche() async {
+    if (_rechercheController.text.length >= 3) {
+      isLoaing.value = true;
+      var response = await api.getLigues(_rechercheController.text);
+      Iterable iterable = jsonDecode(response.data);
+      _leagues.value = iterable.map((l) => League.fromMap(l)).toList();
+
+      _title.value =
+          "${_leagues.length} résultats trouvés pour \"${_rechercheController.text}\"";
+    }
+  }
+
   @override
   void initState() {
-    _futureCoutryList = Convertion.stringToJson("assets/leagues.json");
+    _futureLeagueList = Convertion.stringToJson("assets/leagues.json");
     _rechercheController.addListener(() {
       if (_rechercheController.text.isEmpty) {
         _leagues.value = _initLeagues;
       } else {
-        if (_rechercheController.text.length >= 2) {
+        if (_rechercheController.text.length >= 3) {
           _leagues.value = _initLeagues;
           _title.value =
               "${_leagues.length} résultats trouvés pour \"${_rechercheController.text}\"";
@@ -62,6 +68,7 @@ class _ChampionantsState extends State<Championants> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: TextField(
               controller: _rechercheController,
+              onEditingComplete: recherche,
               decoration: InputDecoration(
                   suffixIcon: Obx(() => IconButton(
                       tooltip: _title.value != "Recommandations"
@@ -85,9 +92,9 @@ class _ChampionantsState extends State<Championants> {
         ),
         preferredSize: const Size.fromHeight(70),
       ),
-      body: _initLeagues.isEmpty
+      body: _leagues.isEmpty
           ? FutureBuilder(
-              future: _futureCoutryList,
+              future: _futureLeagueList,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Text('Waiting');
@@ -171,7 +178,7 @@ class LeagueContainer extends StatelessWidget {
         Opacity(
           opacity: 0.5,
           child: Text(
-            title,
+            "$title: ${leagues.length}",
             style: Theme.of(context).textTheme.bodyText2,
           ),
         ),
