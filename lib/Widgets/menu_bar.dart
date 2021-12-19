@@ -1,7 +1,7 @@
 import 'package:api_football/Data/list.dart';
 import 'package:api_football/Widgets/constants/logo.dart';
 import 'package:flutter/material.dart';
-import 'items/menu_item.dart';
+import 'package:get/get.dart';
 
 class MenuBar extends StatefulWidget {
   const MenuBar({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class _MenuBarState extends State<MenuBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
+      width: 140,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         border: Border(
@@ -44,7 +44,7 @@ class _MenuBarState extends State<MenuBar> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 5),
+            margin: const EdgeInsets.symmetric(vertical: 5),
             child: IconButton(
                 onPressed: () {},
                 icon: Icon(Icons.settings,
@@ -52,6 +52,47 @@ class _MenuBarState extends State<MenuBar> {
                         Theme.of(context).iconTheme.color!.withOpacity(0.4))),
           )
         ],
+      ),
+    );
+  }
+}
+
+class MenuItem extends StatelessWidget {
+  final Map menu;
+  const MenuItem({Key? key, required this.menu}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    bool isCurrent = Get.currentRoute == menu['route'];
+    return InkWell(
+      // hoverColor: Colors.transparent,
+      // highlightColor: Colors.transparent,
+      onTap: () {
+        Get.toNamed(menu['route']);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              menu['icon'],
+              color: isCurrent
+                  ? Theme.of(context).iconTheme.color
+                  : Theme.of(context).iconTheme.color!.withOpacity(0.4),
+            ),
+            const SizedBox(height: 5),
+            Text(menu['titre'],
+                style: isCurrent
+                    ? null
+                    : Theme.of(context).textTheme.bodyText1!.copyWith(
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .color!
+                            .withOpacity(0.4))),
+          ],
+        ),
       ),
     );
   }

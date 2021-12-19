@@ -1,4 +1,4 @@
-import 'package:api_football/Models/Country/country.dart';
+import 'package:api_football/Models/country.dart';
 import 'package:flutter/material.dart';
 
 class CountryItem extends StatelessWidget {

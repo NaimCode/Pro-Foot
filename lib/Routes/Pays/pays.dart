@@ -1,5 +1,4 @@
-import 'package:api_football/Models/Country/country.dart';
-import 'package:api_football/Models/Country/country_list.dart';
+import 'package:api_football/Models/country.dart';
 import 'package:api_football/Routes/Pays/countryItem.dart';
 import 'package:api_football/Utils/convertion.dart';
 import 'package:flutter/material.dart';
@@ -103,7 +102,7 @@ class _PagePaysState extends State<PagePays> {
                       border: InputBorder.none),
                 ),
               )),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.logout))
+              //IconButton(onPressed: () {}, icon: const Icon(Icons.logout))
             ],
           ),
         ),
@@ -118,9 +117,8 @@ class _PagePaysState extends State<PagePays> {
                 }
 
                 if (snapshot.hasData) {
-                  _initCountries =
-                      CountryList.fromLocalJson(snapshot.data!.toString())
-                          .countriesList!;
+                  _initCountries = Convertion.fromLocalJsonToListCountry(
+                      snapshot.data!.toString());
 
                   _countries.value = _initCountries
                       .where((element) =>

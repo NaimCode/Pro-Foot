@@ -1,4 +1,5 @@
 import 'package:api_football/Routes/404.dart';
+import 'package:api_football/Routes/Championants/championants.dart';
 import 'package:api_football/Routes/Pays/pays.dart';
 import 'package:api_football/Utils/Theme.dart';
 import 'package:api_football/Widgets/page.dart';
@@ -31,6 +32,12 @@ class Main extends StatelessWidget {
         GetPage(
           name: "/",
           page: () => const Root(page: Home()),
+          transition: Transition.leftToRight,
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+        GetPage(
+          name: "/championants",
+          page: () => const Root(page: Championants()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
