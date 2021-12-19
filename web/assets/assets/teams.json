@@ -1,0 +1,173 @@
+[
+  {
+    "team_v2": {
+      "id": 529,
+      "name": "Barcelona",
+      "logo": "https://media.api-sports.io/football/teams/529.png",
+      "founded": 1899,
+      "country": "Spain",
+      "national": false
+    },
+    "venue": {
+      "id": 1462,
+      "name": "Camp Nou",
+      "address": "Carrer d&apos;Arístides Maillol",
+      "capacity": 99787,
+      "city": "Barcelona",
+      "image": "https://media.api-sports.io/football/venues/1462.png",
+      "surface": "grass"
+    }
+  },
+  {
+    "team_v2": {
+      "id": 530,
+      "name": "Atletico Madrid",
+      "logo": "https://media.api-sports.io/football/teams/530.png",
+      "founded": 1903,
+      "country": "Spain",
+      "national": false
+    },
+    "venue": {
+      "id": 1461,
+      "name": "Estadio Wanda Metropolitano",
+      "address": "Rosas",
+      "capacity": 68032,
+      "city": "Madrid",
+      "image": "https://media.api-sports.io/football/venues/1461.png",
+      "surface": "grass"
+    }
+  },
+  {
+    "team_v2": {
+      "id": 541,
+      "name": "Real Madrid",
+      "logo": "https://media.api-sports.io/football/teams/541.png",
+      "founded": 1902,
+      "country": "Spain",
+      "national": false
+    },
+    "venue": {
+      "id": 1456,
+      "name": "Estadio Santiago Bernabéu",
+      "address": "Avenida de Concha Espina 1, Chamartín",
+      "capacity": 85454,
+      "city": "Madrid",
+      "image": "https://media.api-sports.io/football/venues/1456.png",
+      "surface": "grass"
+    }
+  },
+  {
+    "team_v2": {
+      "id": 33,
+      "name": "Manchester United",
+      "logo": "https://media.api-sports.io/football/teams/33.png",
+      "founded": 1878,
+      "country": "England",
+      "national": false
+    },
+    "venue": {
+      "id": 556,
+      "name": "Old Trafford",
+      "address": "Sir Matt Busby Way",
+      "capacity": 76212,
+      "city": "Manchester",
+      "image": "https://media.api-sports.io/football/venues/556.png",
+      "surface": "grass"
+    }
+  },
+  {
+    "team_v2": {
+      "id": 40,
+      "name": "Liverpool",
+      "logo": "https://media.api-sports.io/football/teams/40.png",
+      "founded": 1892,
+      "country": "England",
+      "national": false
+    },
+    "venue": {
+      "id": 550,
+      "name": "Anfield",
+      "address": "Anfield Road",
+      "capacity": 55212,
+      "city": "Liverpool",
+      "image": "https://media.api-sports.io/football/venues/550.png",
+      "surface": "grass"
+    }
+  },
+  {
+    "team_v2": {
+      "id": 49,
+      "name": "Chelsea",
+      "logo": "https://media.api-sports.io/football/teams/49.png",
+      "founded": 1905,
+      "country": "England",
+      "national": false
+    },
+    "venue": {
+      "id": 519,
+      "name": "Stamford Bridge",
+      "address": "Fulham Road",
+      "capacity": 41841,
+      "city": "London",
+      "image": "https://media.api-sports.io/football/venues/519.png",
+      "surface": "grass"
+    }
+  },
+  {
+    "team_v2": {
+      "id": 496,
+      "name": "Juventus",
+      "logo": "https://media.api-sports.io/football/teams/496.png",
+      "founded": 1897,
+      "country": "Italy",
+      "national": false
+    },
+    "venue": {
+      "id": 909,
+      "name": "Allianz Stadium",
+      "address": "Strada Comunale di Altessano 131",
+      "capacity": 45666,
+      "city": "Torino",
+      "image": "https://media.api-sports.io/football/venues/909.png",
+      "surface": "grass"
+    }
+  },
+  {
+    "team_v2": {
+      "id": 157,
+      "name": "Bayern Munich",
+      "logo": "https://media.api-sports.io/football/teams/157.png",
+      "founded": 1900,
+      "country": "Germany",
+      "national": false
+    },
+    "venue": {
+      "id": 700,
+      "name": "Allianz Arena",
+      "address": "Werner-Heisenberg-Allee 25",
+      "capacity": 75000,
+      "city": "München",
+      "image": "https://media.api-sports.io/football/venues/700.png",
+      "surface": "grass"
+    }
+  },
+  {
+    "team_v2": {
+      "id": 85,
+      "name": "Paris Saint Germain",
+      "logo": "https://media.api-sports.io/football/teams/85.png",
+      "founded": 1970,
+      "country": "France",
+      "national": false
+    },
+    "venue": {
+      "id": 671,
+      "name": "Parc des Princes",
+      "address": "24, rue du Commandant Guilbaud",
+      "capacity": 47929,
+      "city": "Paris",
+      "image": "https://media.api-sports.io/football/venues/671.png",
+      "surface": "grass"
+    }
+  }
+]

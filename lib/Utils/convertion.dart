@@ -4,6 +4,9 @@ import 'package:api_football/Models/country.dart';
 import 'package:api_football/Models/league.dart';
 import 'package:api_football/Models/primitives/league_v1.dart';
 import 'package:api_football/Models/primitives/season.dart';
+import 'package:api_football/Models/primitives/team_v2.dart';
+import 'package:api_football/Models/primitives/venue.dart';
+import 'package:api_football/Models/team.dart';
 import 'package:flutter/services.dart';
 
 class Convertion {
@@ -30,5 +33,16 @@ class Convertion {
                 .cast<Season>()))
         .toList()
         .cast<League>();
+  }
+
+  static List<Team> fromLocalJsonToListTeam(String jsonString) {
+    Iterable iterable = json.decode(jsonString);
+    return iterable
+        .map((e) => Team(
+              team_v2: Team_v2.fromMap(e['team_v2']),
+              venue: Venue.fromMap(e['venue']),
+            ))
+        .toList()
+        .cast<Team>();
   }
 }

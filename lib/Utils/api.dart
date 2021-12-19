@@ -7,6 +7,11 @@ class API {
     return Dio()
         .get(serverUrl + "/fr/ligues", queryParameters: {"search": query});
   }
+
+  getTeams(String query) async {
+    return Dio()
+        .get(serverUrl + "/fr/equipes", queryParameters: {"search": query});
+  }
 }
 
 enum EndPoint { ligue, equipe }
