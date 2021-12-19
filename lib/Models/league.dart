@@ -41,7 +41,7 @@ class League {
     return League(
       country: map['country'] != null ? Country.fromMap(map['country']) : null,
       league_v1:
-          map['league_v1'] != null ? League_v1.fromMap(map['country']) : null,
+          map['league_v1'] != null ? League_v1.fromMap(map['league_v1']) : null,
       seasons: map['seasons'] != null
           ? List<Season>.from(map['seasons']?.map((x) => Season.fromMap(x)))
           : null,

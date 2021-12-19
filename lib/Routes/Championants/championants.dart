@@ -7,10 +7,8 @@ import 'package:api_football/Widgets/constants/loading.dart';
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
 
-late Future<String> _futureLeagueList;
 List<League> _initLeagues = [];
 RxList<dynamic> _leagues = [].obs;
-RxString _query = "".obs;
 RxString _title = "Recommandations".obs;
 
 TextEditingController _rechercheController = TextEditingController();
@@ -26,30 +24,31 @@ class _ChampionantsState extends State<Championants> {
   API api = API();
   RxBool isLoaing = false.obs;
 
+  iniLeagueFromLocal() async {
+    var snapshot = await Convertion.stringToJson("assets/leagues.json");
+    _initLeagues = Convertion.fromLocalJsonToListLeague(snapshot.toString());
+    _leagues.value = _initLeagues;
+  }
+
   recherche() async {
     if (_rechercheController.text.length >= 3) {
       isLoaing.value = true;
       var response = await api.getLigues(_rechercheController.text);
-      Iterable iterable = jsonDecode(response.data);
-      _leagues.value = iterable.map((l) => League.fromMap(l)).toList();
-
-      _title.value =
-          "${_leagues.length} résultats trouvés pour \"${_rechercheController.text}\"";
+      _leagues.value =
+          response.data.map((l) => League.fromMap(l)).toList().cast<League>();
+      _title.value = "Résultats trouvés pour \"${_rechercheController.text}\"";
+      isLoaing.value = false;
     }
   }
 
   @override
   void initState() {
-    _futureLeagueList = Convertion.stringToJson("assets/leagues.json");
+    iniLeagueFromLocal();
     _rechercheController.addListener(() {
-      if (_rechercheController.text.isEmpty) {
+      if (_rechercheController.text.isEmpty ||
+          _rechercheController.text.length < 3) {
+        _title.value = "Recommandations";
         _leagues.value = _initLeagues;
-      } else {
-        if (_rechercheController.text.length >= 3) {
-          _leagues.value = _initLeagues;
-          _title.value =
-              "${_leagues.length} résultats trouvés pour \"${_rechercheController.text}\"";
-        }
       }
     });
     // TODO: implement initState
@@ -59,74 +58,52 @@ class _ChampionantsState extends State<Championants> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        child: AppBar(
-          title: Container(
-            decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(10)),
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: TextField(
-              controller: _rechercheController,
-              onEditingComplete: recherche,
-              decoration: InputDecoration(
-                  suffixIcon: Obx(() => IconButton(
-                      tooltip: _title.value != "Recommandations"
-                          ? "Effacer"
-                          : "Rechercher",
-                      splashColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onPressed: () {
-                        _rechercheController.clear();
-                      },
-                      icon: Icon(_title.value != "Recommandations"
-                          ? Icons.close
-                          : Icons.search))),
-                  hintText: "Recherche des championants",
-                  contentPadding: const EdgeInsets.only(top: 15),
-                  border: InputBorder.none),
+        appBar: PreferredSize(
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            title: Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(10)),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: TextField(
+                controller: _rechercheController,
+                onEditingComplete: recherche,
+                decoration: InputDecoration(
+                    suffixIcon: Obx(() => IconButton(
+                        tooltip: _title.value != "Recommandations"
+                            ? "Effacer"
+                            : "Rechercher",
+                        splashColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onPressed: () {
+                          _rechercheController.clear();
+                        },
+                        icon: Icon(_title.value != "Recommandations"
+                            ? Icons.close
+                            : Icons.search))),
+                    hintText: "Recherche des championants",
+                    contentPadding: const EdgeInsets.only(top: 15),
+                    border: InputBorder.none),
+              ),
             ),
           ),
+          preferredSize: const Size.fromHeight(70),
         ),
-        preferredSize: const Size.fromHeight(70),
-      ),
-      body: _leagues.isEmpty
-          ? FutureBuilder(
-              future: _futureLeagueList,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Text('Waiting');
-                }
-
-                if (snapshot.hasData) {
-                  _initLeagues = Convertion.fromLocalJsonToListLeague(
-                      snapshot.data!.toString());
-                  _leagues.value = _initLeagues;
-                }
-                return Body();
-              })
-          : Body(),
-    );
+        body: Obx(() => isLoaing.value ? const LoadingPage() : const Body()));
   }
 }
 
 class Body extends StatelessWidget {
-  Body({Key? key}) : super(key: key);
+  const Body({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<League> leagues =
-        _leagues.where((l) => l.league_v1.type == "League").toList().cast();
-    List<League> coupes = _leagues
-        .where((l) => l.league_v1.type == "Cup")
-        .toList()
-        .cast<League>();
-    leagues.printInfo();
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 00),
-        child: Scaffold(
+        child: Obx(() => Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
               centerTitle: false,
@@ -142,19 +119,25 @@ class Body extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   LeagueContainer(
-                    leagues: leagues,
+                    leagues: _leagues
+                        .where((l) => l.league_v1.type == "League")
+                        .toList(growable: false)
+                        .cast(),
                     title: "Ligues",
                   ),
                   const SizedBox(
                     width: 40,
                   ),
                   LeagueContainer(
-                    leagues: coupes,
+                    leagues: _leagues
+                        .where((l) => l.league_v1.type == "Cup")
+                        .toList(growable: false)
+                        .cast<League>(),
                     title: "Coupes",
                   ),
                 ],
               ),
-            )));
+            ))));
   }
 }
 
@@ -171,22 +154,28 @@ class LeagueContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Opacity(
-          opacity: 0.5,
-          child: Text(
-            "$title: ${leagues.length}",
-            style: Theme.of(context).textTheme.bodyText2,
+        child: SingleChildScrollView(
+      controller: ScrollController(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Opacity(
+            opacity: 0.5,
+            child: Text(
+              "$title: ${leagues.length > 20 ? 20 : leagues.length}",
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        ...leagues.map((e) => LeagueItem(league: e)).toList()
-      ],
+          const SizedBox(
+            height: 10,
+          ),
+          ...leagues
+              .getRange(0, leagues.length > 20 ? 20 : leagues.length)
+              .map((e) => LeagueItem(league: e))
+              .toList()
+        ],
+      ),
     ));
   }
 }
@@ -198,7 +187,7 @@ class LeagueItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 3),
+      margin: const EdgeInsets.symmetric(vertical: 3),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor.withOpacity(0.4),
         borderRadius: BorderRadius.circular(10),

@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 class API {
   String serverUrl = "http://localhost:8080";
 
-  Future<Response> getLigues(String query) async {
-    print(query);
-    return Dio().get(serverUrl, queryParameters: {"search": query});
+  getLigues(String query) async {
+    return Dio()
+        .get(serverUrl + "/fr/ligues", queryParameters: {"search": query});
   }
 }
 
