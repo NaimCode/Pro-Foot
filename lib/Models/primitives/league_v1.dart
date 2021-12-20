@@ -36,13 +36,11 @@ class League_v1 {
     };
   }
 
-  factory League_v1.fromMap(Map<String, dynamic> map) {
-    return League_v1(
-      id: map['id']?.toInt(),
-      name: map['name'],
-      type: map['type'],
-      logo: map['logo'],
-    );
+  League_v1.fromMap(Map<String, dynamic> map) {
+    id = map['id']?.toInt();
+    name = map['name'];
+    type = map['type'];
+    logo = map['logo'];
   }
 
   String toJson() => json.encode(toMap());

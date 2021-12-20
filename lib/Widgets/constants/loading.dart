@@ -10,8 +10,8 @@ class LoadingPage extends StatelessWidget {
         body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SpinKitChasingDots(
-          color: Colors.white,
+        SpinKitChasingDots(
+          color: Colors.red[50],
           size: 50.0,
         ),
         const SizedBox(
@@ -19,7 +19,10 @@ class LoadingPage extends StatelessWidget {
         ),
         Text(
           "Chargement...",
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context)
+              .textTheme
+              .headline6!
+              .copyWith(color: Colors.red[50]),
         )
       ],
     ));

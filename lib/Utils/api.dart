@@ -12,6 +12,11 @@ class API {
     return Dio()
         .get(serverUrl + "/fr/equipes", queryParameters: {"search": query});
   }
+
+  Future<Response> getFixture(int last) async {
+    return Dio()
+        .get(serverUrl + "/fr/fixtures", queryParameters: {"last": last});
+  }
 }
 
 enum EndPoint { ligue, equipe }
