@@ -1,6 +1,9 @@
 import 'package:api_football/Models/fixture.dart';
+import 'package:api_football/Routes/Home/home.dart';
+import 'package:api_football/Routes/Matchs/match_detail.dart';
 import 'package:api_football/Utils/api.dart';
 import 'package:api_football/Widgets/constants/loading.dart';
+import 'package:api_football/Widgets/page.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,11 +20,9 @@ enum _Filter { all, live, finished }
 Rx<_Filter> _filter = _Filter.all.obs;
 
 class _MatchsState extends State<Matchs> {
-  late var future;
   API api = API();
   @override
   void initState() {
-    future = api.getFixture(30);
     // TODO: implement initState
     super.initState();
   }
@@ -29,68 +30,74 @@ class _MatchsState extends State<Matchs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            TextButton(
-                onPressed: () {
-                  _filter.value = _Filter.all;
-                },
-                child: Obx(() => Opacity(
-                      opacity: _filter.value == _Filter.all ? 1 : 0.5,
-                      child: Text(
-                        "Tous les matchs",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ))),
-            const SizedBox(width: 40),
-            TextButton(
-                onPressed: () {
-                  _filter.value = _Filter.live;
-                },
-                child: Obx(() => Opacity(
-                      opacity: _filter.value == _Filter.live ? 1 : 0.5,
-                      child: Text(
-                        "En cours",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ))),
-            const SizedBox(width: 40),
-            TextButton(
-                onPressed: () {
-                  _filter.value = _Filter.finished;
-                },
-                child: Obx(() => Opacity(
-                      opacity: _filter.value == _Filter.finished ? 1 : 0.5,
-                      child: Text(
-                        "Terminés",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ))),
-          ],
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              TextButton(
+                  onPressed: () {
+                    _filter.value = _Filter.all;
+                  },
+                  child: Obx(() => Opacity(
+                        opacity: _filter.value == _Filter.all ? 1 : 0.5,
+                        child: Text(
+                          "Tous les matchs",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ))),
+              const SizedBox(width: 40),
+              TextButton(
+                  onPressed: () {
+                    _filter.value = _Filter.live;
+                  },
+                  child: Obx(() => Opacity(
+                        opacity: _filter.value == _Filter.live ? 1 : 0.5,
+                        child: Text(
+                          "En cours",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ))),
+              const SizedBox(width: 40),
+              TextButton(
+                  onPressed: () {
+                    _filter.value = _Filter.finished;
+                  },
+                  child: Obx(() => Opacity(
+                        opacity: _filter.value == _Filter.finished ? 1 : 0.5,
+                        child: Text(
+                          "Terminés",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ))),
+            ],
+          ),
         ),
-      ),
-      body: FutureBuilder<dio.Response>(
-          future: future,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoadingPage();
-            }
-            List<Fixture> fixtures = [];
-            if (snapshot.hasData) {
-              var response = snapshot.data!;
-              fixtures = response.data
-                  .map((l) => Fixture.fromMap(l))
-                  .toList()
-                  .cast<Fixture>();
-            }
-            return ListView.builder(
-                controller: ScrollController(),
-                itemCount: fixtures.length,
-                itemBuilder: (context, index) =>
-                    FixtureItem(fixture: fixtures[index]));
-          }),
-    );
+        body: Obx(
+          () => FutureBuilder<dio.Response>(
+              future: _filter.value == _Filter.all
+                  ? api.getFixture(30)
+                  : _filter.value == _Filter.live
+                      ? api.getFixtureParam("?live=all")
+                      : api.getFixtureParam("?status=FT&last=30"),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const LoadingPage();
+                }
+                List<Fixture> fixtures = [];
+                if (snapshot.hasData) {
+                  var response = snapshot.data!;
+                  fixtures = response.data
+                      .map((l) => Fixture.fromMap(l))
+                      .toList()
+                      .cast<Fixture>();
+                }
+                return ListView.builder(
+                    controller: ScrollController(),
+                    itemCount: fixtures.length,
+                    itemBuilder: (context, index) =>
+                        FixtureItem(fixture: fixtures[index]));
+              }),
+        ));
   }
 }
 
@@ -100,6 +107,8 @@ class FixtureItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // DateTime date = Datetime
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 3),
       decoration: BoxDecoration(
@@ -107,7 +116,17 @@ class FixtureItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Get.to(
+            Root(
+                page: MatchDetail(
+              fixture: fixture,
+            )),
+            routeName: "/matchs/" + fixture.id.toString(),
+            transition: Transition.leftToRight,
+            duration: const Duration(milliseconds: 500),
+          );
+        },
         radius: 20,
         borderRadius: BorderRadius.circular(10),
         child: Padding(
@@ -143,12 +162,20 @@ class FixtureItem extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+              Container(
+                width: 150,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Text(fixture.league_v2!.round!,
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontSize: 10,
+                            color: Colors.yellow[50]!.withOpacity(0.6))),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Text(
                         fixture.homeGoal == "null" || fixture.awayGoal == "null"
                             ? "---"

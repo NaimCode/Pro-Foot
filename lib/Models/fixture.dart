@@ -11,7 +11,7 @@ class Fixture {
   int? timestamp;
   int? halfTime;
   int? fullTime;
-
+  String? date;
   int? venueID;
   String? status;
   int? elapse;
@@ -23,6 +23,7 @@ class Fixture {
   Fixture({
     this.id,
     this.referee,
+    this.date,
     this.timestamp,
     this.halfTime,
     this.fullTime,
@@ -95,10 +96,14 @@ class Fixture {
       fullTime: map['fullTime']?.toInt(),
       venueID: map['venueID']?.toInt(),
       status: map['status'],
+      date: map['date'],
       elapse: map['elapse']?.toInt(),
-      league_v2: map['league_v2'] != null ? League_v2.fromMap(map['league_v2']) : null,
-      homeTeam: map['homeTeam'] != null ? Team_v1.fromMap(map['homeTeam']) : null,
-      awayTeam: map['awayTeam'] != null ? Team_v1.fromMap(map['awayTeam']) : null,
+      league_v2:
+          map['league_v2'] != null ? League_v2.fromMap(map['league_v2']) : null,
+      homeTeam:
+          map['homeTeam'] != null ? Team_v1.fromMap(map['homeTeam']) : null,
+      awayTeam:
+          map['awayTeam'] != null ? Team_v1.fromMap(map['awayTeam']) : null,
       homeGoal: map['homeGoal']?.toInt(),
       awayGoal: map['awayGoal']?.toInt(),
     );
@@ -106,7 +111,8 @@ class Fixture {
 
   String toJson() => json.encode(toMap());
 
-  factory Fixture.fromJson(String source) => Fixture.fromMap(json.decode(source));
+  factory Fixture.fromJson(String source) =>
+      Fixture.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -116,37 +122,37 @@ class Fixture {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is Fixture &&
-      other.id == id &&
-      other.referee == referee &&
-      other.timestamp == timestamp &&
-      other.halfTime == halfTime &&
-      other.fullTime == fullTime &&
-      other.venueID == venueID &&
-      other.status == status &&
-      other.elapse == elapse &&
-      other.league_v2 == league_v2 &&
-      other.homeTeam == homeTeam &&
-      other.awayTeam == awayTeam &&
-      other.homeGoal == homeGoal &&
-      other.awayGoal == awayGoal;
+        other.id == id &&
+        other.referee == referee &&
+        other.timestamp == timestamp &&
+        other.halfTime == halfTime &&
+        other.fullTime == fullTime &&
+        other.venueID == venueID &&
+        other.status == status &&
+        other.elapse == elapse &&
+        other.league_v2 == league_v2 &&
+        other.homeTeam == homeTeam &&
+        other.awayTeam == awayTeam &&
+        other.homeGoal == homeGoal &&
+        other.awayGoal == awayGoal;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      referee.hashCode ^
-      timestamp.hashCode ^
-      halfTime.hashCode ^
-      fullTime.hashCode ^
-      venueID.hashCode ^
-      status.hashCode ^
-      elapse.hashCode ^
-      league_v2.hashCode ^
-      homeTeam.hashCode ^
-      awayTeam.hashCode ^
-      homeGoal.hashCode ^
-      awayGoal.hashCode;
+        referee.hashCode ^
+        timestamp.hashCode ^
+        halfTime.hashCode ^
+        fullTime.hashCode ^
+        venueID.hashCode ^
+        status.hashCode ^
+        elapse.hashCode ^
+        league_v2.hashCode ^
+        homeTeam.hashCode ^
+        awayTeam.hashCode ^
+        homeGoal.hashCode ^
+        awayGoal.hashCode;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:api_football/Models/fixture.dart';
 import 'package:dio/dio.dart';
 
 class API {
@@ -13,9 +14,23 @@ class API {
         .get(serverUrl + "/fr/equipes", queryParameters: {"search": query});
   }
 
+  getCoachs(String query) async {
+    return Dio()
+        .get(serverUrl + "/fr/coachs", queryParameters: {"search": query});
+  }
+
   Future<Response> getFixture(int last) async {
     return Dio()
         .get(serverUrl + "/fr/fixtures", queryParameters: {"last": last});
+  }
+
+  Future<Response> getFixtureParam(String query) async {
+    return Dio().get(serverUrl + "/fr/fixtures" + query);
+  }
+
+  Future<Response> getMatchDetail(Fixture fixture) async {
+    return Dio().get(serverUrl + "/fr/fixtures/statistique",
+        queryParameters: {"venue": fixture.venueID, "id": fixture.id});
   }
 }
 

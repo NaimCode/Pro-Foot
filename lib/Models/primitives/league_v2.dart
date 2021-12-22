@@ -6,6 +6,7 @@ class League_v2 extends League_v1 {
   int? season;
   String? country;
   String? flag;
+  String? round;
   League_v2({this.season, this.country, this.flag, id, name, type, logo})
       : super(id: id, logo: logo, type: type, name: name);
 
@@ -21,6 +22,7 @@ class League_v2 extends League_v1 {
     season = map['season']?.toInt();
     country = map['country'];
     flag = map['flag'];
+    round = map['round'];
   }
 
   String toJson() => json.encode(toMap());

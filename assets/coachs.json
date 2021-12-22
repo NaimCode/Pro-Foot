@@ -1,0 +1,670 @@
+[
+  {
+    "id": 2462,
+    "name": "José Mourinho",
+    "firstName": "José Mario Felix",
+    "lastName": "dos Santos Mourinho",
+    "age": 58,
+    "nationality": "Portugal",
+    "height": "null",
+    "weight": "null",
+    "photo": "https://media.api-sports.io/football/coachs/2462.png",
+    "dateNaissance": "1963-01-26",
+    "lieuNaissance": "Setúbal",
+    "team": {
+      "id": 497,
+      "name": "Roma",
+      "logo": "https://media.api-sports.io/football/teams/497.png",
+      "winner": null
+    },
+    "careers": [
+      {
+        "team": {
+          "id": 497,
+          "name": "Roma",
+          "logo": "https://media.api-sports.io/football/teams/497.png",
+          "winner": null
+        },
+        "start": "2021-07-01",
+        "end": "null"
+      },
+      {
+        "team": {
+          "id": 47,
+          "name": "Tottenham Hotspur",
+          "logo": "https://media.api-sports.io/football/teams/47.png",
+          "winner": null
+        },
+        "start": "2019-11-01",
+        "end": "2021-04-01"
+      },
+      {
+        "team": {
+          "id": 33,
+          "name": "Manchester United",
+          "logo": "https://media.api-sports.io/football/teams/33.png",
+          "winner": null
+        },
+        "start": "2016-05-01",
+        "end": "2018-12-01"
+      },
+      {
+        "team": {
+          "id": 49,
+          "name": "Chelsea",
+          "logo": "https://media.api-sports.io/football/teams/49.png",
+          "winner": null
+        },
+        "start": "2013-06-01",
+        "end": "2015-12-01"
+      },
+      {
+        "team": {
+          "id": 541,
+          "name": "Real Madrid",
+          "logo": "https://media.api-sports.io/football/teams/541.png",
+          "winner": null
+        },
+        "start": "2010-07-01",
+        "end": "2013-06-01"
+      },
+      {
+        "team": {
+          "id": 505,
+          "name": "Inter Milan",
+          "logo": "https://media.api-sports.io/football/teams/505.png",
+          "winner": null
+        },
+        "start": "2008-06-01",
+        "end": "2010-06-01"
+      },
+      {
+        "team": {
+          "id": 49,
+          "name": "Chelsea",
+          "logo": "https://media.api-sports.io/football/teams/49.png",
+          "winner": null
+        },
+        "start": "2004-07-01",
+        "end": "2007-09-01"
+      },
+      {
+        "team": {
+          "id": 212,
+          "name": "Porto",
+          "logo": "https://media.api-sports.io/football/teams/212.png",
+          "winner": null
+        },
+        "start": "2002-01-01",
+        "end": "2004-06-01"
+      },
+      {
+        "team": {
+          "id": 4662,
+          "name": "União de Leiria",
+          "logo": "https://media.api-sports.io/football/teams/4662.png",
+          "winner": null
+        },
+        "start": "2001-07-01",
+        "end": "2002-01-01"
+      },
+      {
+        "team": {
+          "id": 211,
+          "name": "Benfica",
+          "logo": "https://media.api-sports.io/football/teams/211.png",
+          "winner": null
+        },
+        "start": "2000-09-01",
+        "end": "2000-12-01"
+      }
+    ]
+  },
+  {
+    "id": 5594,
+    "name": "A. Wenger",
+    "firstName": "Arsène",
+    "lastName": "Wenger",
+    "age": 69,
+    "nationality": " France",
+    "height": "null",
+    "weight": "null",
+    "photo": "https://media.api-sports.io/football/coachs/5594.png",
+    "dateNaissance": "1949-10-22",
+    "lieuNaissance": "Strasbourg",
+    "team": {
+      "id": 42,
+      "name": "Arsenal",
+      "logo": "https://media.api-sports.io/football/teams/42.png",
+      "winner": null
+    },
+    "careers": [
+      {
+        "team": {
+          "id": 42,
+          "name": "Arsenal",
+          "logo": "https://media.api-sports.io/football/teams/42.png",
+          "winner": null
+        },
+        "start": "1996-09-30",
+        "end": "2018-05-23"
+      },
+      {
+        "team": {
+          "id": 288,
+          "name": "Nagoya Grampus",
+          "logo": "https://media.api-sports.io/football/teams/288.png",
+          "winner": null
+        },
+        "start": "1995-07-01",
+        "end": "1996-06-30"
+      },
+      {
+        "team": {
+          "id": 91,
+          "name": "Monaco",
+          "logo": "https://media.api-sports.io/football/teams/91.png",
+          "winner": null
+        },
+        "start": "1987-07-01",
+        "end": "1995-06-28"
+      },
+      {
+        "team": {
+          "id": 102,
+          "name": "Nancy",
+          "logo": "https://media.api-sports.io/football/teams/102.png",
+          "winner": null
+        },
+        "start": "1984-07-01",
+        "end": "1987-06-30"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Guardiola",
+    "firstName": "Josep",
+    "lastName": "Guardiola i Sala",
+    "age": 50,
+    "nationality": "Espagne",
+    "height": "180 cm",
+    "weight": "70 kg",
+    "photo": "https://media.api-sports.io/football/coachs/4.png",
+    "dateNaissance": "1971-01-18",
+    "lieuNaissance": "Santpedor",
+    "team": {
+      "id": 50,
+      "name": "Manchester City",
+      "logo": "https://media.api-sports.io/football/teams/50.png",
+      "winner": null
+    },
+    "careers": [
+      {
+        "team": {
+          "id": 50,
+          "name": "Manchester City",
+          "logo": "https://media.api-sports.io/football/teams/50.png",
+          "winner": null
+        },
+        "start": "2016-07-01",
+        "end": "null"
+      },
+      {
+        "team": {
+          "id": 157,
+          "name": "Bayern Munich",
+          "logo": "https://media.api-sports.io/football/teams/157.png",
+          "winner": null
+        },
+        "start": "2013-06-01",
+        "end": "2016-06-01"
+      },
+      {
+        "team": {
+          "id": 529,
+          "name": "Barcelona",
+          "logo": "https://media.api-sports.io/football/teams/529.png",
+          "winner": null
+        },
+        "start": "2008-07-01",
+        "end": "2012-06-01"
+      },
+      {
+        "team": {
+          "id": 712,
+          "name": "Barcelona II",
+          "logo": "https://media.api-sports.io/football/teams/712.png",
+          "winner": null
+        },
+        "start": "2007-06-01",
+        "end": "2008-06-01"
+      }
+    ]
+  },
+  {
+    "id": 1595,
+    "name": "D. Simeone",
+    "firstName": "Diego Pablo",
+    "lastName": "Simeone",
+    "age": 51,
+    "nationality": "Argentine",
+    "height": "177 cm",
+    "weight": "77 kg",
+    "photo": "https://media.api-sports.io/football/coachs/1595.png",
+    "dateNaissance": "1970-04-28",
+    "lieuNaissance": "Buenos Aires",
+    "team": {
+      "id": 530,
+      "name": "Atletico Madrid",
+      "logo": "https://media.api-sports.io/football/teams/530.png",
+      "winner": null
+    },
+    "careers": [
+      {
+        "team": {
+          "id": 530,
+          "name": "Atletico Madrid",
+          "logo": "https://media.api-sports.io/football/teams/530.png",
+          "winner": null
+        },
+        "start": "2011-12-01",
+        "end": "null"
+      },
+      {
+        "team": {
+          "id": 436,
+          "name": "Racing Club",
+          "logo": "https://media.api-sports.io/football/teams/436.png",
+          "winner": null
+        },
+        "start": "2011-06-01",
+        "end": "2011-12-01"
+      },
+      {
+        "team": {
+          "id": 1580,
+          "name": "Catania",
+          "logo": "https://media.api-sports.io/football/teams/1580.png",
+          "winner": null
+        },
+        "start": "2011-01-01",
+        "end": "2011-05-01"
+      },
+      {
+        "team": {
+          "id": 460,
+          "name": "San Lorenzo",
+          "logo": "https://media.api-sports.io/football/teams/460.png",
+          "winner": null
+        },
+        "start": "2009-04-01",
+        "end": "2010-04-01"
+      },
+      {
+        "team": {
+          "id": 435,
+          "name": "River Plate",
+          "logo": "https://media.api-sports.io/football/teams/435.png",
+          "winner": null
+        },
+        "start": "2007-12-01",
+        "end": "2008-11-01"
+      },
+      {
+        "team": {
+          "id": 450,
+          "name": "Estudiantes",
+          "logo": "https://media.api-sports.io/football/teams/450.png",
+          "winner": null
+        },
+        "start": "2006-05-01",
+        "end": "2007-12-01"
+      },
+      {
+        "team": {
+          "id": 436,
+          "name": "Racing Club",
+          "logo": "https://media.api-sports.io/football/teams/436.png",
+          "winner": null
+        },
+        "start": "2006-02-01",
+        "end": "2006-04-01"
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "name": "J. Klopp",
+    "firstName": "Jürgen",
+    "lastName": "Klopp",
+    "age": 54,
+    "nationality": "Allemagne",
+    "height": "191 cm",
+    "weight": "83 kg",
+    "photo": "https://media.api-sports.io/football/coachs/1.png",
+    "dateNaissance": "1967-06-16",
+    "lieuNaissance": "Stuttgart",
+    "team": {
+      "id": 40,
+      "name": "Liverpool",
+      "logo": "https://media.api-sports.io/football/teams/40.png",
+      "winner": null
+    },
+    "careers": [
+      {
+        "team": {
+          "id": 40,
+          "name": "Liverpool",
+          "logo": "https://media.api-sports.io/football/teams/40.png",
+          "winner": null
+        },
+        "start": "2015-10-01",
+        "end": "null"
+      },
+      {
+        "team": {
+          "id": 165,
+          "name": "Borussia Dortmund",
+          "logo": "https://media.api-sports.io/football/teams/165.png",
+          "winner": null
+        },
+        "start": "2008-07-01",
+        "end": "2015-07-01"
+      },
+      {
+        "team": {
+          "id": 0,
+          "name": "Mainz",
+          "logo": "null",
+          "winner": null
+        },
+        "start": "2001-02-01",
+        "end": "2008-06-01"
+      }
+    ]
+  },
+  {
+    "id": 2407,
+    "name": "C. Ancelotti",
+    "firstName": "Carlo",
+    "lastName": "Ancelotti",
+    "age": 62,
+    "nationality": "Italie",
+    "height": "179 cm",
+    "weight": "74 kg",
+    "photo": "https://media.api-sports.io/football/coachs/2407.png",
+    "dateNaissance": "1959-06-10",
+    "lieuNaissance": "Reggiolo",
+    "team": {
+      "id": 541,
+      "name": "Real Madrid",
+      "logo": "https://media.api-sports.io/football/teams/541.png",
+      "winner": null
+    },
+    "careers": [
+      {
+        "team": {
+          "id": 541,
+          "name": "Real Madrid",
+          "logo": "https://media.api-sports.io/football/teams/541.png",
+          "winner": null
+        },
+        "start": "2021-06-01",
+        "end": "null"
+      },
+      {
+        "team": {
+          "id": 45,
+          "name": "Everton",
+          "logo": "https://media.api-sports.io/football/teams/45.png",
+          "winner": null
+        },
+        "start": "2019-12-01",
+        "end": "2021-06-01"
+      },
+      {
+        "team": {
+          "id": 492,
+          "name": "Napoli",
+          "logo": "https://media.api-sports.io/football/teams/492.png",
+          "winner": null
+        },
+        "start": "2018-05-01",
+        "end": "2019-12-01"
+      },
+      {
+        "team": {
+          "id": 157,
+          "name": "Bayern Munich",
+          "logo": "https://media.api-sports.io/football/teams/157.png",
+          "winner": null
+        },
+        "start": "2016-07-01",
+        "end": "2017-09-01"
+      },
+      {
+        "team": {
+          "id": 541,
+          "name": "Real Madrid",
+          "logo": "https://media.api-sports.io/football/teams/541.png",
+          "winner": null
+        },
+        "start": "2013-06-01",
+        "end": "2015-05-01"
+      },
+      {
+        "team": {
+          "id": 85,
+          "name": "PSG",
+          "logo": "https://media.api-sports.io/football/teams/85.png",
+          "winner": null
+        },
+        "start": "2011-12-01",
+        "end": "2013-06-01"
+      },
+      {
+        "team": {
+          "id": 49,
+          "name": "Chelsea",
+          "logo": "https://media.api-sports.io/football/teams/49.png",
+          "winner": null
+        },
+        "start": "2009-07-01",
+        "end": "2011-05-01"
+      },
+      {
+        "team": {
+          "id": 0,
+          "name": "AC Milan",
+          "logo": "null",
+          "winner": null
+        },
+        "start": "2001-11-01",
+        "end": "2009-05-01"
+      },
+      {
+        "team": {
+          "id": 496,
+          "name": "Juventus",
+          "logo": "https://media.api-sports.io/football/teams/496.png",
+          "winner": null
+        },
+        "start": "1999-02-01",
+        "end": "2001-06-01"
+      },
+      {
+        "team": {
+          "id": 523,
+          "name": "Parma",
+          "logo": "https://media.api-sports.io/football/teams/523.png",
+          "winner": null
+        },
+        "start": "1996-07-01",
+        "end": "1998-06-01"
+      },
+      {
+        "team": {
+          "id": 880,
+          "name": "Reggiana",
+          "logo": "https://media.api-sports.io/football/teams/880.png",
+          "winner": null
+        },
+        "start": "1995-07-01",
+        "end": "1996-06-01"
+      }
+    ]
+  },
+  {
+    "id": 1584,
+    "name": "Z. Zidane",
+    "firstName": "Zinédine",
+    "lastName": "Zidane",
+    "age": 49,
+    "nationality": "France",
+    "height": "185 cm",
+    "weight": "78 kg",
+    "photo": "https://media.api-sports.io/football/coachs/1584.png",
+    "dateNaissance": "1972-06-23",
+    "lieuNaissance": "Marseille",
+    "team": {
+      "id": 541,
+      "name": "Real Madrid",
+      "logo": "https://media.api-sports.io/football/teams/541.png",
+      "winner": null
+    },
+    "careers": [
+      {
+        "team": {
+          "id": 541,
+          "name": "Real Madrid",
+          "logo": "https://media.api-sports.io/football/teams/541.png",
+          "winner": null
+        },
+        "start": "2019-03-01",
+        "end": "2021-05-01"
+      },
+      {
+        "team": {
+          "id": 541,
+          "name": "Real Madrid",
+          "logo": "https://media.api-sports.io/football/teams/541.png",
+          "winner": null
+        },
+        "start": "2016-01-01",
+        "end": "2018-05-01"
+      },
+      {
+        "team": {
+          "id": 9575,
+          "name": "Real Madrid II",
+          "logo": "https://media.api-sports.io/football/teams/9575.png",
+          "winner": null
+        },
+        "start": "2015-07-01",
+        "end": "2016-01-01"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Unai Emery",
+    "firstName": "Unai",
+    "lastName": "Emery Etxegoien",
+    "age": 50,
+    "nationality": "Espagne",
+    "height": "null",
+    "weight": "null",
+    "photo": "https://media.api-sports.io/football/coachs/18.png",
+    "dateNaissance": "1971-11-03",
+    "lieuNaissance": "Hondarribia",
+    "team": {
+      "id": 533,
+      "name": "Villarreal",
+      "logo": "https://media.api-sports.io/football/teams/533.png",
+      "winner": null
+    },
+    "careers": [
+      {
+        "team": {
+          "id": 533,
+          "name": "Villarreal",
+          "logo": "https://media.api-sports.io/football/teams/533.png",
+          "winner": null
+        },
+        "start": "2020-07-01",
+        "end": "null"
+      },
+      {
+        "team": {
+          "id": 42,
+          "name": "Arsenal",
+          "logo": "https://media.api-sports.io/football/teams/42.png",
+          "winner": null
+        },
+        "start": "2018-05-01",
+        "end": "2019-11-01"
+      },
+      {
+        "team": {
+          "id": 85,
+          "name": "PSG",
+          "logo": "https://media.api-sports.io/football/teams/85.png",
+          "winner": null
+        },
+        "start": "2016-06-01",
+        "end": "2018-05-01"
+      },
+      {
+        "team": {
+          "id": 536,
+          "name": "Sevilla",
+          "logo": "https://media.api-sports.io/football/teams/536.png",
+          "winner": null
+        },
+        "start": "2013-01-01",
+        "end": "2016-06-01"
+      },
+      {
+        "team": {
+          "id": 558,
+          "name": "Spartak Moscow",
+          "logo": "https://media.api-sports.io/football/teams/558.png",
+          "winner": null
+        },
+        "start": "2012-06-01",
+        "end": "2012-11-01"
+      },
+      {
+        "team": {
+          "id": 532,
+          "name": "Valencia",
+          "logo": "https://media.api-sports.io/football/teams/532.png",
+          "winner": null
+        },
+        "start": "2008-07-01",
+        "end": "2012-06-01"
+      },
+      {
+        "team": {
+          "id": 723,
+          "name": "Almeria",
+          "logo": "https://media.api-sports.io/football/teams/723.png",
+          "winner": null
+        },
+        "start": "2006-07-01",
+        "end": "2008-06-01"
+      },
+      {
+        "team": {
+          "id": 9400,
+          "name": "Lorca Deportiva CF",
+          "logo": "https://media.api-sports.io/football/teams/9400.png",
+          "winner": null
+        },
+        "start": "2004-11-01",
+        "end": "2006-06-01"
+      }
+    ]
+  }
+]

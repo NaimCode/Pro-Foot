@@ -63,7 +63,8 @@ class MenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isCurrent = Get.currentRoute == menu['route'];
+    bool isHome = Get.currentRoute == "/";
+    bool isCurrent = isHome ? isHome : Get.currentRoute.contains(menu['route']);
     return InkWell(
       // hoverColor: Colors.transparent,
       // highlightColor: Colors.transparent,

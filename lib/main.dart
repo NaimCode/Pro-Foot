@@ -1,5 +1,6 @@
 import 'package:api_football/Routes/404.dart';
 import 'package:api_football/Routes/Championants/championants.dart';
+import 'package:api_football/Routes/Coachs/coachs.dart';
 import 'package:api_football/Routes/Equipe/equipe.dart';
 import 'package:api_football/Routes/Matchs/matchs.dart';
 import 'package:api_football/Routes/Pays/pays.dart';
@@ -22,7 +23,7 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: "Api Football",
-      initialRoute: "/",
+      initialRoute: "/home",
       unknownRoute: GetPage(
           name: "/404",
           page: () => const Root(page: PageNotFound()),
@@ -37,13 +38,25 @@ class Main extends StatelessWidget {
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
+           GetPage(
+          name: "/home",
+          page: () => const Root(page: Home()),
+          transition: Transition.leftToRight,
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
         GetPage(
           name: "/equipes",
           page: () => const Root(page: Equipes()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
-            GetPage(
+        GetPage(
+          name: "/coaches",
+          page: () => const Root(page: CoachsPage()),
+          transition: Transition.leftToRight,
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+        GetPage(
           name: "/matchs",
           page: () => const Root(page: Matchs()),
           transition: Transition.leftToRight,
@@ -57,24 +70,12 @@ class Main extends StatelessWidget {
         ),
         GetPage(
           name: "/pays",
-          page: () => Root(page: PagePays()),
-          transition: Transition.leftToRight,
-          transitionDuration: const Duration(milliseconds: 500),
-        ),
-        GetPage(
-          name: "/transferts",
-          page: () => const Root(page: PageNotFound()),
+          page: () => const Root(page: PagePays()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
         GetPage(
           name: "/versus",
-          page: () => const Root(page: PageNotFound()),
-          transition: Transition.leftToRight,
-          transitionDuration: const Duration(milliseconds: 500),
-        ),
-        GetPage(
-          name: "/joueurs",
           page: () => const Root(page: PageNotFound()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),

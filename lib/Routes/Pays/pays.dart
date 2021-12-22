@@ -66,44 +66,32 @@ class _PagePaysState extends State<PagePays> {
       appBar: PreferredSize(
         child: AppBar(
           automaticallyImplyLeading: false,
-          title: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Pays",
-                style: Theme.of(context).textTheme.headline5,
-              ),
-              Expanded(
-                  child: Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(15)),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                margin: const EdgeInsets.symmetric(horizontal: 100),
-                child: TextField(
-                  controller: _rechercheController,
-                  decoration: InputDecoration(
-                      suffixIcon: Obx(() => IconButton(
-                          tooltip: _title.value != "Recommandations"
-                              ? "Effacer"
-                              : "Rechercher",
-                          splashColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onPressed: () {
-                            _rechercheController.clear();
-                          },
-                          icon: Icon(_title.value != "Recommandations"
-                              ? Icons.close
-                              : Icons.search))),
-                      hintText: "Recherche",
-                      contentPadding: const EdgeInsets.only(top: 15),
-                      border: InputBorder.none),
-                ),
-              )),
-              //IconButton(onPressed: () {}, icon: const Icon(Icons.logout))
-            ],
+          title: Container(
+            decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(10)),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 0),
+            child: TextField(
+              controller: _rechercheController,
+              decoration: InputDecoration(
+                  suffixIcon: Obx(() => IconButton(
+                      tooltip: _title.value != "Recommandations"
+                          ? "Effacer"
+                          : "Rechercher",
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onPressed: () {
+                        _rechercheController.clear();
+                      },
+                      icon: Icon(_title.value != "Recommandations"
+                          ? Icons.close
+                          : Icons.search))),
+                  hintText: "Recherche des pays",
+                  contentPadding: const EdgeInsets.only(top: 15),
+                  border: InputBorder.none),
+            ),
           ),
         ),
         preferredSize: const Size.fromHeight(70),
@@ -139,29 +127,99 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => SingleChildScrollView(
-          child: Column(
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Obx(
+          () => SingleChildScrollView(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 _title.value,
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline4!
+                    .copyWith(color: Colors.blue[50]),
               ),
               const SizedBox(
                 height: 20,
               ),
-              GridView.builder(
-                  shrinkWrap: true,
-                  controller: ScrollController(),
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 250,
-                      childAspectRatio: 3 / 2,
-                      crossAxisSpacing: 40,
-                      mainAxisSpacing: 40),
-                  itemCount: _countries.length,
-                  itemBuilder: (context, index) =>
-                      CountryItem(country: _countries[index])),
+              GridView.count(
+                crossAxisCount: 2,
+                childAspectRatio: 10 / 2,
+                shrinkWrap: true,
+                controller: ScrollController(),
+                crossAxisSpacing: 13,
+                mainAxisSpacing: 7,
+                children: _countries
+                    .getRange(
+                        0, _countries.length < 20 ? _countries.length : 20)
+                    .map((e) => countryiItem(league: e))
+                    .toList(),
+              ),
+              // GridView.builder(
+              //     shrinkWrap: true,
+              //     controller: ScrollController(),
+              //     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              //         maxCrossAxisExtent: 250,
+              //         childAspectRatio: 3 / 2,
+              //         crossAxisSpacing: 40,
+              //         mainAxisSpacing: 40),
+              //     itemCount: _countries.length,
+              //     itemBuilder: (context, index) =>
+              //         CountryItem(country: _countries[index])),
+            ],
+          )),
+        ));
+  }
+}
+
+class countryiItem extends StatelessWidget {
+  final Country league;
+  const countryiItem({Key? key, required this.league}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: InkWell(
+        onTap: () {},
+        radius: 20,
+        borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              const SizedBox(
+                width: 10,
+              ),
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.white70,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Image.network(
+                    league.flag!,
+                    scale: 3.0,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 30,
+              ),
+              Text(
+                league.name!,
+                style: Theme.of(context).textTheme.subtitle1,
+              )
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

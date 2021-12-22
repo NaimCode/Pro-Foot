@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:api_football/Models/coach.dart';
 import 'package:api_football/Models/league.dart';
 import 'package:api_football/Models/team.dart';
 import 'package:api_football/Utils/api.dart';
@@ -8,37 +9,37 @@ import 'package:api_football/Widgets/constants/loading.dart';
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
 
-List<Team> _initTeams = [];
-RxList<dynamic> _teams = [].obs;
+List<Coach> _initCoachs = [];
+RxList<dynamic> _coaches = [].obs;
 RxString _title = "Recommandations".obs;
 
 TextEditingController _rechercheController = TextEditingController();
 
-class Equipes extends StatefulWidget {
-  const Equipes({Key? key}) : super(key: key);
+class CoachsPage extends StatefulWidget {
+  const CoachsPage({Key? key}) : super(key: key);
 
   @override
-  _EquipesState createState() => _EquipesState();
+  _CoachsPageState createState() => _CoachsPageState();
 }
 
-class _EquipesState extends State<Equipes> {
+class _CoachsPageState extends State<CoachsPage> {
   API api = API();
   RxBool isLoaing = false.obs;
 
   iniLeagueFromLocal() async {
-    var snapshot = await Convertion.stringToJson("assets/teams.json");
-    _initTeams = Convertion.fromLocalJsonToListTeam(snapshot.toString());
-    _teams.value = _initTeams;
+    var snapshot = await Convertion.stringToJson("assets/coachs.json");
+    _initCoachs = Convertion.fromLocalJsonToListCoach(snapshot.toString());
+    _coaches.value = _initCoachs;
   }
 
   recherche() async {
     if (_rechercheController.text.length >= 3) {
       isLoaing.value = true;
-      var response = await api.getTeams(_rechercheController.text);
-      _teams.value =
-          response.data.map((l) => Team.fromMap(l)).toList().cast<Team>();
+      var response = await api.getCoachs(_rechercheController.text);
+      _coaches.value =
+          response.data.map((l) => Coach.fromMap(l)).toList().cast<Coach>();
       _title.value =
-          "${_teams.length < 20 ? _teams.length : 20} résultats trouvés pour \"${_rechercheController.text}\"";
+          "${_coaches.length < 20 ? _coaches.length : 20} résultats trouvés pour \"${_rechercheController.text}\"";
       isLoaing.value = false;
     }
   }
@@ -50,7 +51,7 @@ class _EquipesState extends State<Equipes> {
       if (_rechercheController.text.isEmpty ||
           _rechercheController.text.length < 3) {
         _title.value = "Recommandations";
-        _teams.value = _initTeams;
+        _coaches.value = _initCoachs;
       }
     });
     // TODO: implement initState
@@ -86,7 +87,7 @@ class _EquipesState extends State<Equipes> {
                         icon: Icon(_title.value != "Recommandations"
                             ? Icons.close
                             : Icons.search))),
-                    hintText: "Recherche des équipes",
+                    hintText: "Recherche des coaches",
                     contentPadding: const EdgeInsets.only(top: 15),
                     border: InputBorder.none),
               ),
@@ -106,40 +107,42 @@ class Body extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 00),
         child: Obx(() => Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              centerTitle: false,
-              title: Text(_title.value,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4!
-                      .copyWith(color: Colors.blue[100])),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: GridView.count(
-                crossAxisCount: 2,
-                childAspectRatio: 10 / 2,
-                shrinkWrap: true,
-                controller: ScrollController(),
-                crossAxisSpacing: 13,
-                mainAxisSpacing: 7,
-                children: _teams
-                    .getRange(0, _teams.length < 20 ? _teams.length : 20)
-                    .map((e) => teamItem(league: e))
-                    .toList(),
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                centerTitle: false,
+                title: Text(_title.value,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4!
+                        .copyWith(color: Colors.blue[100])),
               ),
-            ))));
+              body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: GridView.builder(
+                    shrinkWrap: true,
+                    controller: ScrollController(),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 260,
+                            childAspectRatio: 1.2,
+                            crossAxisSpacing: 40,
+                            mainAxisSpacing: 40),
+                    itemCount: _coaches.length,
+                    itemBuilder: (context, index) =>
+                        coachItem(coach: _coaches[index])),
+              ),
+            )));
   }
 }
 
-class teamItem extends StatelessWidget {
-  final Team league;
-  const teamItem({Key? key, required this.league}) : super(key: key);
+class coachItem extends StatelessWidget {
+  final Coach coach;
+  const coachItem({Key? key, required this.coach}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 100,
       margin: const EdgeInsets.symmetric(vertical: 3),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor.withOpacity(0.4),
@@ -147,31 +150,31 @@ class teamItem extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {},
-        radius: 20,
+        radius: 50,
         borderRadius: BorderRadius.circular(10),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Row(
+          child: Column(
             children: [
               const SizedBox(
-                width: 10,
+                height: 10,
               ),
               CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.white70,
+                radius: 50,
+                backgroundColor: Colors.white,
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Image.network(
-                    league.team_v2!.logo!,
+                    coach.photo!,
                     fit: BoxFit.fitHeight,
                   ),
                 ),
               ),
               const SizedBox(
-                width: 30,
+                height: 10,
               ),
               Text(
-                league.team_v2!.name!,
+                coach.name!,
                 style: Theme.of(context).textTheme.subtitle1,
               )
             ],

@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:api_football/Models/coach.dart';
 import 'package:api_football/Models/country.dart';
 import 'package:api_football/Models/league.dart';
 import 'package:api_football/Models/primitives/league_v1.dart';
 import 'package:api_football/Models/primitives/season.dart';
+import 'package:api_football/Models/primitives/team_v1.dart';
 import 'package:api_football/Models/primitives/team_v2.dart';
 import 'package:api_football/Models/primitives/venue.dart';
 import 'package:api_football/Models/team.dart';
@@ -44,5 +46,10 @@ class Convertion {
             ))
         .toList()
         .cast<Team>();
+  }
+
+  static List<Coach> fromLocalJsonToListCoach(String jsonString) {
+    Iterable iterable = json.decode(jsonString);
+    return iterable.map((e) => Coach.fromMap(e)).toList().cast<Coach>();
   }
 }
