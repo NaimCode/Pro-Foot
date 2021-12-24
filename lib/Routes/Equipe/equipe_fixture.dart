@@ -1,4 +1,6 @@
 import 'package:api_football/Models/fixture.dart';
+import 'package:api_football/Models/primitives/team_v1.dart';
+import 'package:api_football/Models/team.dart';
 import 'package:api_football/Routes/Home/home.dart';
 import 'package:api_football/Routes/Matchs/match_detail.dart';
 import 'package:api_football/Utils/api.dart';
@@ -8,21 +10,23 @@ import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Matchs extends StatefulWidget {
-  const Matchs({Key? key}) : super(key: key);
+class EquipeFixture extends StatefulWidget {
+  final Team? team;
+  const EquipeFixture({Key? key, required this.team}) : super(key: key);
 
   @override
-  _MatchsState createState() => _MatchsState();
+  _EquipeFixtureState createState() => _EquipeFixtureState();
 }
 
-enum _Filter { all, live, finished }
+enum _Filter { matchs, players, statistics }
 
-Rx<_Filter> _filter = _Filter.all.obs;
+Rx<_Filter> _filter = _Filter.matchs.obs;
 
-class _MatchsState extends State<Matchs> {
+class _EquipeFixtureState extends State<EquipeFixture> {
   API api = API();
   @override
   void initState() {
+    if (widget.team == null) Get.toNamed("/equipes");
     // TODO: implement initState
     super.initState();
   }
@@ -36,36 +40,36 @@ class _MatchsState extends State<Matchs> {
             children: [
               TextButton(
                   onPressed: () {
-                    _filter.value = _Filter.all;
+                    _filter.value = _Filter.matchs;
                   },
                   child: Obx(() => Opacity(
-                        opacity: _filter.value == _Filter.all ? 1 : 0.5,
+                        opacity: _filter.value == _Filter.matchs ? 1 : 0.5,
                         child: Text(
-                          "Tous les matchs",
+                          "Matchs",
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ))),
               const SizedBox(width: 40),
               TextButton(
                   onPressed: () {
-                    _filter.value = _Filter.live;
+                    _filter.value = _Filter.statistics;
                   },
                   child: Obx(() => Opacity(
-                        opacity: _filter.value == _Filter.live ? 1 : 0.5,
+                        opacity: _filter.value == _Filter.statistics ? 1 : 0.5,
                         child: Text(
-                          "En cours",
+                          "Statistiques",
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ))),
               const SizedBox(width: 40),
               TextButton(
                   onPressed: () {
-                    _filter.value = _Filter.finished;
+                    _filter.value = _Filter.players;
                   },
                   child: Obx(() => Opacity(
-                        opacity: _filter.value == _Filter.finished ? 1 : 0.5,
+                        opacity: _filter.value == _Filter.players ? 1 : 0.5,
                         child: Text(
-                          "Terminés",
+                          "Joueurs",
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ))),
@@ -73,32 +77,84 @@ class _MatchsState extends State<Matchs> {
           ),
         ),
         body: Obx(
-          () => FutureBuilder<dio.Response>(
-              future: _filter.value == _Filter.all
-                  ? api.getFixture(30)
-                  : _filter.value == _Filter.live
-                      ? api.getFixtureParam("?live=all")
-                      : api.getFixtureParam("?status=FT&last=30"),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const LoadingPage();
-                }
-                List<Fixture> fixtures = [];
-                if (snapshot.hasData) {
-                  var response = snapshot.data!;
-                  fixtures = response.data
-                      .map((l) => Fixture.fromMap(l))
-                      .toList()
-                      .cast<Fixture>();
-                  fixtures.sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
-                }
-                return ListView.builder(
-                    controller: ScrollController(),
-                    itemCount: fixtures.length,
-                    itemBuilder: (context, index) =>
-                        FixtureItem(fixture: fixtures[index]));
-              }),
+          () => MatchFixture(api: api, widget: widget),
         ));
+  }
+}
+
+class MatchStatistique extends StatelessWidget {
+  const MatchStatistique({
+    Key? key,
+    required this.api,
+    required this.widget,
+  }) : super(key: key);
+
+  final API api;
+  final EquipeFixture widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<dio.Response>(
+        future: api.getFixtureTeam(30, widget.team!.team_v2!.id!),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingPage();
+          }
+          List<Fixture> fixtures = [];
+          if (snapshot.hasData) {
+            var response = snapshot.data!;
+
+            fixtures = response.data
+                .map((l) => Fixture.fromMap(l))
+                .toList()
+                .cast<Fixture>();
+            //  fixtures = fixtures;
+            fixtures.sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
+          }
+          return ListView.builder(
+              controller: ScrollController(),
+              itemCount: fixtures.length,
+              itemBuilder: (context, index) =>
+                  FixtureItem(fixture: fixtures[index]));
+        });
+  }
+}
+
+class MatchFixture extends StatelessWidget {
+  const MatchFixture({
+    Key? key,
+    required this.api,
+    required this.widget,
+  }) : super(key: key);
+
+  final API api;
+  final EquipeFixture widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<dio.Response>(
+        future: api.getFixtureTeam(30, widget.team!.team_v2!.id!),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingPage();
+          }
+          List<Fixture> fixtures = [];
+          if (snapshot.hasData) {
+            var response = snapshot.data!;
+
+            fixtures = response.data
+                .map((l) => Fixture.fromMap(l))
+                .toList()
+                .cast<Fixture>();
+            //  fixtures = fixtures;
+            fixtures.sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
+          }
+          return ListView.builder(
+              controller: ScrollController(),
+              itemCount: fixtures.length,
+              itemBuilder: (context, index) =>
+                  FixtureItem(fixture: fixtures[index]));
+        });
   }
 }
 
@@ -117,17 +173,17 @@ class FixtureItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
-        // onTap: () {
-        //   Get.to(
-        //     Root(
-        //         page: MatchDetail(
-        //       fixture: fixture,
-        //     )),
-        //     routeName: "/matchs/" + fixture.id.toString(),
-        //     transition: Transition.leftToRight,
-        //     duration: const Duration(milliseconds: 500),
-        //   );
-        // },
+        onTap: () {
+          Get.to(
+            Root(
+                page: MatchDetail(
+              fixture: fixture,
+            )),
+            routeName: "/matchs/" + fixture.id.toString(),
+            transition: Transition.leftToRight,
+            duration: const Duration(milliseconds: 500),
+          );
+        },
         radius: 20,
         borderRadius: BorderRadius.circular(10),
         child: Padding(
@@ -178,11 +234,9 @@ class FixtureItem extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                        fixture.homeGoal == "null" || fixture.awayGoal == "null"
-                            ? "---"
-                            : fixture.homeGoal.toString() +
-                                " - " +
-                                fixture.awayGoal.toString(),
+                        fixture.homeGoal.toString() +
+                            " - " +
+                            fixture.awayGoal.toString(),
                         style: Theme.of(context).textTheme.headline6),
                     const SizedBox(
                       height: 10,

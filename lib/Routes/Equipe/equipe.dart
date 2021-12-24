@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:api_football/Models/historique_model.dart';
 import 'package:api_football/Models/league.dart';
 import 'package:api_football/Models/team.dart';
+import 'package:api_football/Routes/Equipe/equipe_fixture.dart';
 import 'package:api_football/Utils/api.dart';
 import 'package:api_football/Utils/convertion.dart';
 import 'package:api_football/Widgets/constants/loading.dart';
+import 'package:api_football/Widgets/page.dart';
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
 
@@ -146,7 +149,19 @@ class teamItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          historiqueList.value.add(HistoriqueModel(
+              name: league.team_v2!.name,
+              type: "equipe",
+              image: league.team_v2!.logo!,
+              id: league.team_v2!.id!.toString()));
+          Get.to(
+            Root(page: EquipeFixture(team: league)),
+            routeName: "/equipes/" + league.team_v2!.id.toString(),
+            transition: Transition.leftToRight,
+            duration: const Duration(milliseconds: 500),
+          );
+        },
         radius: 20,
         borderRadius: BorderRadius.circular(10),
         child: Padding(
