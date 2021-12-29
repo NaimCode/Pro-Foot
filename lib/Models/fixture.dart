@@ -11,7 +11,7 @@ class Fixture {
   int? timestamp;
   int? halfTime;
   int? fullTime;
-  String? date;
+  DateTime? date;
   int? venueID;
   String? status;
   int? elapse;
@@ -36,6 +36,9 @@ class Fixture {
     this.homeGoal,
     this.awayGoal,
   });
+  String toStringDate() {
+    return "${date!.year}-${date!.month}-${date!.day}";
+  }
 
   Fixture copyWith({
     int? id,
@@ -96,7 +99,7 @@ class Fixture {
       fullTime: map['fullTime']?.toInt(),
       venueID: map['venueID']?.toInt(),
       status: map['status'],
-      date: map['date'],
+      date: DateTime.parse(map['date']),
       elapse: map['elapse']?.toInt(),
       league_v2:
           map['league_v2'] != null ? League_v2.fromMap(map['league_v2']) : null,

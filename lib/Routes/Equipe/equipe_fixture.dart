@@ -1,4 +1,5 @@
 import 'package:api_football/Models/fixture.dart';
+import 'package:api_football/Models/primitives/player.dart';
 import 'package:api_football/Models/primitives/team_v1.dart';
 import 'package:api_football/Models/team.dart';
 import 'package:api_football/Routes/Home/home.dart';
@@ -76,9 +77,92 @@ class _EquipeFixtureState extends State<EquipeFixture> {
             ],
           ),
         ),
-        body: Obx(
-          () => MatchFixture(api: api, widget: widget),
-        ));
+        body: Obx(() => _filter.value == _Filter.matchs
+            ? MatchFixture(api: api, widget: widget)
+            : MatchFixture(api: api, widget: widget)));
+  }
+}
+// class MatchPlayers extends StatelessWidget {
+//   const MatchPlayers({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Obx(() => Scaffold(
+//           appBar: AppBar(
+//             automaticallyImplyLeading: false,
+//             centerTitle: false,
+//             title: Text(_title.value,
+//                 style: Theme.of(context)
+//                     .textTheme
+//                     .headline4!
+//                     .copyWith(color: Colors.blue[100])),
+//           ),
+//           body: Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 20),
+//             child: GridView.builder(
+//                 shrinkWrap: true,
+//                 controller: ScrollController(),
+//                 gridDelegate:
+//                     const SliverGridDelegateWithMaxCrossAxisExtent(
+//                         maxCrossAxisExtent: 260,
+//                         childAspectRatio: 1.2,
+//                         crossAxisSpacing: 40,
+//                         mainAxisSpacing: 40),
+//                 itemCount: _coaches.length,
+//                 itemBuilder: (context, index) =>
+//                     coachItem(coach: _coaches[index])),
+//           ),
+//         ));
+//   }
+// }
+
+class playerItem extends StatelessWidget {
+  final Player coach;
+  const playerItem({Key? key, required this.coach}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 100,
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: InkWell(
+        onTap: () {},
+        radius: 50,
+        borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Image.network(
+                    " coach.",
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                coach.name!,
+                style: Theme.of(context).textTheme.subtitle1,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -188,93 +272,117 @@ class FixtureItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      fixture.homeTeam!.name!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: Colors.white54),
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.white70,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Image.network(
-                          fixture.homeTeam!.logo!,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 150,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(fixture.league_v2!.round!,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(fixture.league_v2!.name!,
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             fontSize: 10,
-                            color: Colors.yellow[50]!.withOpacity(0.6))),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                        fixture.homeGoal.toString() +
-                            " - " +
-                            fixture.awayGoal.toString(),
-                        style: Theme.of(context).textTheme.headline6),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(fixture.status!,
+                            color: Colors.blue[100]!.withOpacity(0.6))),
+                  ),
+                  Text(fixture.league_v2!.round!,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontSize: 10,
+                          color: Colors.blue[100]!.withOpacity(0.6))),
+                  Expanded(
+                    child: Text(fixture.toStringDate(),
+                        textAlign: TextAlign.right,
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             fontSize: 10,
-                            color: Colors.yellow[50]!.withOpacity(0.6))),
-                  ],
-                ),
+                            color: Colors.blue[100]!.withOpacity(0.6))),
+                  ),
+                ],
               ),
-              Expanded(
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.white70,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Image.network(
-                          fixture.awayTeam!.logo!,
-                          fit: BoxFit.fitHeight,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          fixture.homeTeam!.name!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(color: Colors.white54),
                         ),
-                      ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.white70,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Image.network(
+                              fixture.homeTeam!.logo!,
+                              fit: BoxFit.fitHeight,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(
-                      width: 15,
+                  ),
+                  Container(
+                    width: 150,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                            fixture.homeGoal.toString() +
+                                " - " +
+                                fixture.awayGoal.toString(),
+                            style: Theme.of(context).textTheme.headline6),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(fixture.status!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(
+                                    fontSize: 10,
+                                    color:
+                                        Colors.yellow[50]!.withOpacity(0.6))),
+                      ],
                     ),
-                    Text(
-                      fixture.awayTeam!.name!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: Colors.white54),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.white70,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Image.network(
+                              fixture.awayTeam!.logo!,
+                              fit: BoxFit.fitHeight,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          fixture.awayTeam!.name!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(color: Colors.white54),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )
+                  )
+                ],
+              ),
             ],
           ),
         ),
