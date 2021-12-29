@@ -1,7 +1,9 @@
 import 'package:api_football/Models/fixture.dart';
+import 'package:api_football/Models/league.dart';
 import 'package:api_football/Models/primitives/player.dart';
 import 'package:api_football/Models/primitives/team_v1.dart';
 import 'package:api_football/Models/team.dart';
+import 'package:api_football/Models/team_statistic.dart';
 import 'package:api_football/Routes/Home/home.dart';
 import 'package:api_football/Routes/Matchs/match_detail.dart';
 import 'package:api_football/Utils/api.dart';
@@ -79,7 +81,7 @@ class _EquipeFixtureState extends State<EquipeFixture> {
         ),
         body: Obx(() => _filter.value == _Filter.matchs
             ? MatchFixture(api: api, widget: widget)
-            : MatchFixture(api: api, widget: widget)));
+            : BodyStatistique(team: widget.team!)));
   }
 }
 // class MatchPlayers extends StatelessWidget {
@@ -157,6 +159,687 @@ class playerItem extends StatelessWidget {
               Text(
                 coach.name!,
                 style: Theme.of(context).textTheme.subtitle1,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BodyStatistique extends StatefulWidget {
+  final Team team;
+  const BodyStatistique({Key? key, required this.team}) : super(key: key);
+
+  @override
+  _BodyStatistiqueState createState() => _BodyStatistiqueState();
+}
+
+RxInt _leagueSelected = 0.obs;
+RxList _leagues = [].obs;
+
+class _BodyStatistiqueState extends State<BodyStatistique> {
+  API api = API();
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<dio.Response>(
+      future:
+          api.getLiguesQuery("?team=" + widget.team.team_v2!.id!.toString()),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const LoadingPage();
+        }
+
+        if (snapshot.hasData) {
+          _leagues.value = snapshot.data!.data
+              .map((l) => League.fromMap(l))
+              .toList()
+              .cast<League>();
+        }
+        return Scaffold(
+          appBar: AppBar(
+              automaticallyImplyLeading: false,
+              title: SingleChildScrollView(
+                controller: ScrollController(),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: _leagues
+                      .map((e) => Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: LeagueItem(
+                                league: e,
+                                selected: _leagues.indexOf(e) ==
+                                    _leagueSelected.value),
+                          ))
+                      .toList(),
+                ),
+              )),
+          body: FutureBuilder<dio.Response>(
+            future: api.getTeamStatistic(
+                "?team=${widget.team.team_v2!.id}&league=${_leagues[_leagueSelected.value].league_v1.id}&season=${_leagues[_leagueSelected.value].seasons.last.year}"),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const LoadingPage();
+              }
+
+              if (snapshot.hasData) {
+                TeamStatistic teamStatistic =
+                    TeamStatistic.fromMap(snapshot.data!.data);
+
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        height: 100,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
+                        decoration: BoxDecoration(
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Opacity(
+                                opacity: 0.5,
+                                child: Text(
+                                  "Etats des derniers matchs",
+                                  style: Theme.of(context).textTheme.headline6,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Expanded(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: teamStatistic.form!.length,
+                                  itemBuilder: (context, index) => CircleAvatar(
+                                        radius: 30,
+                                        backgroundColor:
+                                            TeamStatistic.colorFrom(
+                                                teamStatistic.form![
+                                                    teamStatistic.form!.length -
+                                                        1 -
+                                                        index]),
+                                        child: Text(TeamStatistic.stringForm(
+                                            teamStatistic.form![
+                                                teamStatistic.form!.length -
+                                                    1 -
+                                                    index])),
+                                      )),
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Expanded(
+                          child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                              controller: ScrollController(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 130,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.4),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 4, horizontal: 5),
+                                          child: Text(
+                                            "Matchs joués",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(
+                                                    color: Colors.brown[100]),
+                                          ),
+                                        ),
+                                        const Divider(),
+                                        Expanded(
+                                            child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                    teamStatistic.fixture_v1!
+                                                        .played!.home
+                                                        .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline4),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Opacity(
+                                                    opacity: 0.4,
+                                                    child: Text(
+                                                      "Domicile",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2!
+                                                          .copyWith(
+                                                              fontSize: 10),
+                                                    ))
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                    teamStatistic.fixture_v1!
+                                                        .played!.away
+                                                        .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline4),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Opacity(
+                                                    opacity: 0.4,
+                                                    child: Text(
+                                                      "Extérieur",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2!
+                                                          .copyWith(
+                                                              fontSize: 10),
+                                                    ))
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                    teamStatistic.fixture_v1!
+                                                        .played!.total
+                                                        .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline4),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Opacity(
+                                                    opacity: 0.4,
+                                                    child: Text(
+                                                      "Total",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2!
+                                                          .copyWith(
+                                                              fontSize: 10),
+                                                    ))
+                                              ],
+                                            ),
+                                          ],
+                                        ))
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    height: 130,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.4),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 4, horizontal: 5),
+                                          child: Text(
+                                            "Matchs gagnés",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(
+                                                    color: Colors.blue[100]),
+                                          ),
+                                        ),
+                                        const Divider(),
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                      teamStatistic.fixture_v1!
+                                                          .wins!.home
+                                                          .toString(),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
+                                                  const SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  Opacity(
+                                                      opacity: 0.4,
+                                                      child: Text(
+                                                        "Domicile",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText2!
+                                                            .copyWith(
+                                                                fontSize: 10),
+                                                      ))
+                                                ],
+                                              ),
+                                              Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                      teamStatistic.fixture_v1!
+                                                          .wins!.away
+                                                          .toString(),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
+                                                  const SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  Opacity(
+                                                      opacity: 0.4,
+                                                      child: Text(
+                                                        "Extérieur",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText2!
+                                                            .copyWith(
+                                                                fontSize: 10),
+                                                      ))
+                                                ],
+                                              ),
+                                              Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                      teamStatistic.fixture_v1!
+                                                          .wins!.total
+                                                          .toString(),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
+                                                  const SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  Opacity(
+                                                    opacity: 0.4,
+                                                    child: Text(
+                                                      "Total",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2!
+                                                          .copyWith(
+                                                              fontSize: 10),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    height: 130,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.4),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 4, horizontal: 5),
+                                          child: Text(
+                                            "Matchs nuls",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(
+                                                    color: Colors.yellow[100]),
+                                          ),
+                                        ),
+                                        const Divider(),
+                                        Expanded(
+                                            child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                    teamStatistic
+                                                        .fixture_v1!.draws!.home
+                                                        .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline4),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Opacity(
+                                                    opacity: 0.4,
+                                                    child: Text(
+                                                      "Domicile",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2!
+                                                          .copyWith(
+                                                              fontSize: 10),
+                                                    ))
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                    teamStatistic
+                                                        .fixture_v1!.draws!.away
+                                                        .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline4),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Opacity(
+                                                    opacity: 0.4,
+                                                    child: Text(
+                                                      "Extérieur",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2!
+                                                          .copyWith(
+                                                              fontSize: 10),
+                                                    ))
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                    teamStatistic.fixture_v1!
+                                                        .draws!.total
+                                                        .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline4),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Opacity(
+                                                    opacity: 0.4,
+                                                    child: Text(
+                                                      "Total",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2!
+                                                          .copyWith(
+                                                              fontSize: 10),
+                                                    ))
+                                              ],
+                                            ),
+                                          ],
+                                        ))
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    height: 130,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.4),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 4, horizontal: 5),
+                                          child: Text(
+                                            "Matchs perdus",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(
+                                                    color: Colors.red[100]),
+                                          ),
+                                        ),
+                                        const Divider(),
+                                        Expanded(
+                                            child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                    teamStatistic
+                                                        .fixture_v1!.loses!.home
+                                                        .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline4),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Opacity(
+                                                    opacity: 0.4,
+                                                    child: Text(
+                                                      "Domicile",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2!
+                                                          .copyWith(
+                                                              fontSize: 10),
+                                                    ))
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                    teamStatistic
+                                                        .fixture_v1!.loses!.away
+                                                        .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline4),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Opacity(
+                                                    opacity: 0.4,
+                                                    child: Text(
+                                                      "Extérieur",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2!
+                                                          .copyWith(
+                                                              fontSize: 10),
+                                                    ))
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                    teamStatistic.fixture_v1!
+                                                        .loses!.total
+                                                        .toString(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline4),
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Opacity(
+                                                    opacity: 0.4,
+                                                    child: Text(
+                                                      "Total",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2!
+                                                          .copyWith(
+                                                              fontSize: 10),
+                                                    ))
+                                              ],
+                                            ),
+                                          ],
+                                        ))
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                              child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.4),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ))
+                        ],
+                      ))
+                    ],
+                  ),
+                );
+              }
+              return const Center(
+                child: Text("Erreur"),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
+class LeagueItem extends StatelessWidget {
+  final bool selected;
+  final League league;
+  const LeagueItem({Key? key, required this.league, required this.selected})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 5),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor.withOpacity(selected ? 1 : 0.3),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: InkWell(
+        onTap: () {
+          _leagueSelected.value = _leagues.indexOf(league);
+        },
+        radius: 20,
+        borderRadius: BorderRadius.circular(10),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                width: 2,
+              ),
+              CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.white70,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Image.network(
+                    league.league_v1!.logo!,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Opacity(
+                opacity: 0.5,
+                child: Text(
+                  league.league_v1!.name!,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(fontSize: 12),
+                ),
               )
             ],
           ),

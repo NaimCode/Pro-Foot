@@ -17,6 +17,9 @@ class League {
     this.country,
     this.seasons,
   });
+  Season getLastSeason() {
+    return this.seasons!.last;
+  }
 
   League copyWith({
     League_v1? league_v1,
