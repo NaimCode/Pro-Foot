@@ -1,5 +1,10 @@
 import 'dart:convert';
 
+import 'package:api_football/Models/league.dart';
+import 'package:api_football/Models/team.dart';
+import 'package:api_football/Routes/Equipe/equipe_fixture.dart';
+import 'package:api_football/Utils/api.dart';
+import 'package:api_football/Widgets/page.dart';
 import 'package:get/get.dart';
 
 class HistoriqueModel {
@@ -8,8 +13,23 @@ class HistoriqueModel {
   String? type;
   String? id;
 
-  goTo() {
-    Get.toNamed("/${type! + 's'}/$id");
+  goTo() async {
+    API api = API();
+
+    switch (type) {
+      case "equipe":
+        var response = await api.getTeams(name!);
+        Team team =
+            response.data.map((l) => Team.fromMap(l)).toList().cast<Team>()[0];
+        Get.to(
+          Root(page: EquipeFixture(team: team)),
+          routeName: "/equipes/" + team.team_v2!.id.toString(),
+          transition: Transition.leftToRight,
+          duration: const Duration(milliseconds: 500),
+        );
+        break;
+      default:
+    }
   }
 
   HistoriqueModel({
