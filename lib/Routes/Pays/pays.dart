@@ -1,8 +1,11 @@
 import 'package:api_football/Models/country.dart';
+import 'package:api_football/Models/historique_model.dart';
 import 'package:api_football/Routes/Pays/countryItem.dart';
 import 'package:api_football/Utils/convertion.dart';
+import 'package:api_football/Widgets/page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
 List<String> _paysRecommandation = [
   "Belgique",
@@ -187,7 +190,30 @@ class countryiItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Box box = Hive.box("historique");
+          // HistoriqueModel historiqueModel = HistoriqueModel(
+          //   name: league.name,
+          //   route: "/pays/" + league.code.toString(),
+          //   image: league.flag,
+          // );
+          // historiqueList.addIf(
+          //     !historiqueList.any((element) => element.name == league.name),
+          //     HistoriqueModel(
+          //       name: league.name,
+          //       route: "/pays/" + league.code.toString(),
+          //       image: league.flag,
+          //     ));
+
+          if (!box.values.any((element) => element.name == league.name)) {
+            box.add(HistoriqueModel(
+              name: league.name,
+              route: "/pays/" + league.code.toString(),
+              image: league.flag,
+            ));
+          }
+          Get.toNamed("/pays/" + league.code!);
+        },
         radius: 20,
         borderRadius: BorderRadius.circular(10),
         child: Padding(

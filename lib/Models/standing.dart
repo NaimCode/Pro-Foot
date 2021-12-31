@@ -5,52 +5,42 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import 'package:api_football/Models/primitives/league_v2.dart';
+import 'package:api_football/Models/primitives/standing_group.dart';
 import 'package:api_football/Models/primitives/standing_v1.dart';
 
 class Standing {
   League_v2? league_v2;
-  List<Standing_v1>? standing_v1s;
+  List<StandingGroup> standings_groups;
   Standing({
     this.league_v2,
-    this.standing_v1s,
+    required this.standings_groups,
   });
 
   Standing copyWith({
     League_v2? league_v2,
-    List<Standing_v1>? standing_v1s,
+    List<StandingGroup>? standings_groups,
   }) {
     return Standing(
       league_v2: league_v2 ?? this.league_v2,
-      standing_v1s: standing_v1s ?? this.standing_v1s,
+      standings_groups: standings_groups ?? this.standings_groups,
     );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'league_v2': league_v2?.toMap(),
-      'standing_v1s': standing_v1s?.map((x) => x.toMap()).toList(),
-    };
   }
 
   factory Standing.fromMap(Map<String, dynamic> map) {
     return Standing(
       league_v2:
           map['league_v2'] != null ? League_v2.fromMap(map['league_v2']) : null,
-      standing_v1s: map['standing_v1s'] != null
-          ? List<Standing_v1>.from(
-              map['standing_v1s']?.map((x) => Standing_v1.fromMap(x)))
-          : null,
+      standings_groups: List<StandingGroup>.from(
+          map['standings_groups']?.map((x) => StandingGroup.fromMap(x))),
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   factory Standing.fromJson(String source) =>
       Standing.fromMap(json.decode(source));
 
   @override
   String toString() =>
-      'Standing(league_v2: $league_v2, standing_v1s: $standing_v1s)';
+      'Standing(league_v2: $league_v2, standings_groups: $standings_groups)';
 
   @override
   bool operator ==(Object other) {
@@ -58,9 +48,18 @@ class Standing {
 
     return other is Standing &&
         other.league_v2 == league_v2 &&
-        listEquals(other.standing_v1s, standing_v1s);
+        listEquals(other.standings_groups, standings_groups);
   }
 
   @override
-  int get hashCode => league_v2.hashCode ^ standing_v1s.hashCode;
+  int get hashCode => league_v2.hashCode ^ standings_groups.hashCode;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'league_v2': league_v2?.toMap(),
+      'standings_groups': standings_groups.map((x) => x.toMap()).toList(),
+    };
+  }
+
+  String toJson() => json.encode(toMap());
 }

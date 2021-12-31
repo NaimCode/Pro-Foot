@@ -8,6 +8,7 @@ import 'package:api_football/Widgets/constants/loading.dart';
 import 'package:api_football/Widgets/page.dart';
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
+import 'package:hive/hive.dart';
 
 List<League> _initLeagues = [];
 RxList<dynamic> _leagues = [].obs;
@@ -196,20 +197,36 @@ class LeagueItem extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          historiqueList.add(HistoriqueModel(
-            name: league.league_v1!.name,
-            route: "/championants/" +
-                league.league_v1!.id.toString() +
-                "/" +
-                league.seasons!.last.start!,
-            image: league.league_v1!.logo!,
-          ));
+          Box box = Hive.box("historique");
+          // historiqueList.addIf(
+          //     !historiqueList
+          //         .any((element) => element.name == league.league_v1!.name),
+          //     HistoriqueModel(
+          //       name: league.league_v1!.name,
+          //       route: "/championants/" +
+          //           league.league_v1!.id.toString() +
+          //           "/" +
+          //           league.seasons!.last.year!.toString(),
+          //       image: league.league_v1!.logo!,
+          //     )
+          // );
 
+          if (!box.values
+              .any((element) => element.name == league.league_v1!.name)) {
+            box.add(HistoriqueModel(
+              name: league.league_v1!.name,
+              route: "/championants/" +
+                  league.league_v1!.id.toString() +
+                  "/" +
+                  league.seasons!.last.year!.toString(),
+              image: league.league_v1!.logo!,
+            ));
+          }
           Get.toNamed(
             "/championants/" +
                 league.league_v1!.id.toString() +
                 "/" +
-                league.seasons!.last.start!,
+                league.seasons!.last.year!.toString(),
           );
         },
         radius: 20,

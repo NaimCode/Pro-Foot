@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:api_football/Routes/verus/404.dart';
 import 'package:api_football/Routes/Championants/championants.dart';
 import 'package:api_football/Routes/Coachs/coachs.dart';
@@ -7,16 +9,24 @@ import 'package:api_football/Routes/Pays/pays.dart';
 import 'package:api_football/Utils/Theme.dart';
 import 'package:api_football/Widgets/page.dart';
 import 'package:api_football/Routes/Equipe/bodyPlayers.dart';
-import 'package:api_football/test.dart';
+import 'package:api_football/Routes/Championants/classement.dart';
+import 'package:api_football/Routes/Pays/League_pays.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/route_manager.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
+import 'Models/historique_model.dart';
 import 'Routes/Equipe/equipe_fixture.dart';
 import 'Routes/Home/home.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(HistoriqueModelAdapter());
+  var box = await Hive.openBox('historique');
+
   runApp(const Main());
 }
 
@@ -56,7 +66,7 @@ class Main extends StatelessWidget {
         ),
         GetPage(
           name: "/equipes/:id",
-          page: () => Root(page: EquipeFixture()),
+          page: () => const Root(page: EquipeFixture()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
@@ -81,6 +91,12 @@ class Main extends StatelessWidget {
         GetPage(
           name: "/pays",
           page: () => const Root(page: PagePays()),
+          transition: Transition.leftToRight,
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+        GetPage(
+          name: "/pays/:country",
+          page: () => const Root(page: LeagueCountry()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),

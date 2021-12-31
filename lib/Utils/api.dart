@@ -1,12 +1,21 @@
+import 'package:api_football/Models/country.dart';
 import 'package:api_football/Models/fixture.dart';
 import 'package:dio/dio.dart';
 
 class API {
   String serverUrl = "http://localhost:8080";
 
-  getLigues(String query) async {
+  Future<Response> getLigues(String query) async {
     return Dio()
         .get(serverUrl + "/fr/ligues", queryParameters: {"search": query});
+  }
+
+  Future<Response> getLiguesByQuery(String query) async {
+    return Dio().get(serverUrl + "/fr/ligues" + query);
+  }
+
+  Future<Response> getCountry(String query) async {
+    return Dio().get(serverUrl + "/en/pays" + query);
   }
 
   Future<Response> getLiguesQuery(String query) async {

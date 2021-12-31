@@ -1,12 +1,19 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+part 'historique_model.g.dart';
 
-class HistoriqueModel {
-  String? image;
+@HiveType(typeId: 0)
+class HistoriqueModel extends HiveObject {
+  @HiveField(0)
   String? name;
-  String? route;
+  @HiveField(1)
+  String? image;
 
+  @HiveField(2)
+  String? route;
+  // flutter packages pub run build_runner build
   goTo() => Get.toNamed(route!);
 
   HistoriqueModel({

@@ -11,6 +11,7 @@ import 'package:api_football/Widgets/page.dart';
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
 import 'package:dio/dio.dart' as dio;
+import 'package:hive_flutter/adapters.dart';
 
 List<Team> _initTeams = [];
 RxList<dynamic> _teams = [].obs;
@@ -152,12 +153,25 @@ class teamItem extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          historiqueList.add(HistoriqueModel(
-            name: league.team_v2!.name,
-            route: "/equipes/" + league.team_v2!.id.toString(),
-            image: league.team_v2!.logo!,
-          ));
+           Box box = Hive.box("historique");
+          // historiqueList.addIf(
+          //     !historiqueList
+          //         .any((element) => element.name == league.team_v2!.name),
+          //     HistoriqueModel(
+          //       name: league.team_v2!.name,
+          //       route: "/equipes/" + league.team_v2!.id.toString(),
+          //       image: league.team_v2!.logo!,
+          //     ));
 
+          if (!box.values.any((element) => element.name == league.team_v2!.name)) {
+            box.add(
+              HistoriqueModel(
+                name: league.team_v2!.name,
+                route: "/equipes/" + league.team_v2!.id.toString(),
+                image: league.team_v2!.logo!,
+              ));
+           
+          }
           Get.toNamed("/equipes/" + league.team_v2!.id.toString());
         },
         radius: 20,
