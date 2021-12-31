@@ -30,7 +30,7 @@ class _RootState extends State<Root> {
             padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
             child: widget.page,
           )),
-          Historique()
+          const Historique()
         ],
       ),
     );

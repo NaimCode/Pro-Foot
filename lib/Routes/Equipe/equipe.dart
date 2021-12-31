@@ -10,6 +10,7 @@ import 'package:api_football/Widgets/constants/loading.dart';
 import 'package:api_football/Widgets/page.dart';
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
+import 'package:dio/dio.dart' as dio;
 
 List<Team> _initTeams = [];
 RxList<dynamic> _teams = [].obs;
@@ -37,7 +38,8 @@ class _EquipesState extends State<Equipes> {
   recherche() async {
     if (_rechercheController.text.length >= 3) {
       isLoaing.value = true;
-      var response = await api.getTeams(_rechercheController.text);
+      dio.Response response = await api.getTeams(_rechercheController.text);
+
       _teams.value =
           response.data.map((l) => Team.fromMap(l)).toList().cast<Team>();
       _title.value =
@@ -150,17 +152,13 @@ class teamItem extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          historiqueList.value.add(HistoriqueModel(
-              name: league.team_v2!.name,
-              type: "equipe",
-              image: league.team_v2!.logo!,
-              id: league.team_v2!.id!.toString()));
-          Get.to(
-            Root(page: EquipeFixture(team: league)),
-            routeName: "/equipes/" + league.team_v2!.id.toString(),
-            transition: Transition.leftToRight,
-            duration: const Duration(milliseconds: 500),
-          );
+          historiqueList.add(HistoriqueModel(
+            name: league.team_v2!.name,
+            route: "/equipes/" + league.team_v2!.id.toString(),
+            image: league.team_v2!.logo!,
+          ));
+
+          Get.toNamed("/equipes/" + league.team_v2!.id.toString());
         },
         radius: 20,
         borderRadius: BorderRadius.circular(10),

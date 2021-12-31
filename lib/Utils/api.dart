@@ -18,8 +18,16 @@ class API {
         .get(serverUrl + "/fr/equipes", queryParameters: {"search": query});
   }
 
- Future<Response> getTeamStatistic(String query) async {
+  Future<Response> getTeamStatistic(String query) async {
     return Dio().get(serverUrl + "/fr/equipes/statistiques" + query);
+  }
+
+  Future<Response> getPlayers(String query) async {
+    return Dio().get(serverUrl + "/fr/joueurs" + query);
+  }
+
+  Future<Response> getLeagueClassement(String query) async {
+    return Dio().get(serverUrl + "/fr/classement" + query);
   }
 
   getCoachs(String query) async {

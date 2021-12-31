@@ -12,10 +12,12 @@ import 'package:api_football/Widgets/page.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+
+import 'bodyPlayers.dart';
 
 class EquipeFixture extends StatefulWidget {
-  final Team? team;
-  const EquipeFixture({Key? key, required this.team}) : super(key: key);
+  const EquipeFixture({Key? key}) : super(key: key);
 
   @override
   _EquipeFixtureState createState() => _EquipeFixtureState();
@@ -28,15 +30,11 @@ Rx<_Filter> _filter = _Filter.matchs.obs;
 class _EquipeFixtureState extends State<EquipeFixture> {
   API api = API();
   @override
-  void initState() {
-    if (widget.team == null) Get.toNamed("/equipes");
-    // TODO: implement initState
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Provider<int>(
+      create: (context) => int.parse(Get.parameters['id']!),
+      child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Row(
@@ -79,44 +77,17 @@ class _EquipeFixtureState extends State<EquipeFixture> {
             ],
           ),
         ),
-        body: Obx(() => _filter.value == _Filter.matchs
-            ? MatchFixture(api: api, widget: widget)
-            : BodyStatistique(team: widget.team!)));
+        body: Obx(
+          () => _filter.value == _Filter.matchs
+              ? MatchFixture()
+              : _filter.value == _Filter.statistics
+                  ? const BodyStatistique()
+                  : const BodyPlayers(),
+        ),
+      ),
+    );
   }
 }
-// class MatchPlayers extends StatelessWidget {
-//   const MatchPlayers({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Obx(() => Scaffold(
-//           appBar: AppBar(
-//             automaticallyImplyLeading: false,
-//             centerTitle: false,
-//             title: Text(_title.value,
-//                 style: Theme.of(context)
-//                     .textTheme
-//                     .headline4!
-//                     .copyWith(color: Colors.blue[100])),
-//           ),
-//           body: Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 20),
-//             child: GridView.builder(
-//                 shrinkWrap: true,
-//                 controller: ScrollController(),
-//                 gridDelegate:
-//                     const SliverGridDelegateWithMaxCrossAxisExtent(
-//                         maxCrossAxisExtent: 260,
-//                         childAspectRatio: 1.2,
-//                         crossAxisSpacing: 40,
-//                         mainAxisSpacing: 40),
-//                 itemCount: _coaches.length,
-//                 itemBuilder: (context, index) =>
-//                     coachItem(coach: _coaches[index])),
-//           ),
-//         ));
-//   }
-// }
 
 class playerItem extends StatelessWidget {
   final Player coach;
@@ -169,8 +140,7 @@ class playerItem extends StatelessWidget {
 }
 
 class BodyStatistique extends StatefulWidget {
-  final Team team;
-  const BodyStatistique({Key? key, required this.team}) : super(key: key);
+  const BodyStatistique({Key? key}) : super(key: key);
 
   @override
   _BodyStatistiqueState createState() => _BodyStatistiqueState();
@@ -182,9 +152,9 @@ class _BodyStatistiqueState extends State<BodyStatistique> {
   API api = API();
   @override
   Widget build(BuildContext context) {
+    int id = context.watch<int>();
     return FutureBuilder<dio.Response>(
-      future:
-          api.getLiguesQuery("?team=" + widget.team.team_v2!.id!.toString()),
+      future: api.getLiguesQuery("?team=" + id.toString()),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const LoadingPage();
@@ -195,6 +165,7 @@ class _BodyStatistiqueState extends State<BodyStatistique> {
               .map((l) => League.fromMap(l))
               .toList()
               .cast<League>();
+          _leagueSelected.value = 0;
         }
 
         return Obx(() => Scaffold(
@@ -266,7 +237,7 @@ class _BodyStatistiqueState extends State<BodyStatistique> {
                   )),
               body: FutureBuilder<dio.Response>(
                 future: api.getTeamStatistic(
-                    "?team=${widget.team.team_v2!.id}&league=${_leagues[_leagueSelected.value].league_v1.id}&season=${_leagues[_leagueSelected.value].seasons.last.year}"),
+                    "?team=$id&league=${_leagues[_leagueSelected.value].league_v1.id}&season=${_leagues[_leagueSelected.value].seasons.last.year}"),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const LoadingPage();
@@ -1158,19 +1129,14 @@ class _BodyStatistiqueState extends State<BodyStatistique> {
 }
 
 class MatchStatistique extends StatelessWidget {
-  const MatchStatistique({
-    Key? key,
-    required this.api,
-    required this.widget,
-  }) : super(key: key);
-
-  final API api;
-  final EquipeFixture widget;
+  final API api = API();
+  MatchStatistique({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    int id = context.watch<int>();
     return FutureBuilder<dio.Response>(
-        future: api.getFixtureTeam(30, widget.team!.team_v2!.id!),
+        future: api.getFixtureTeam(30, id),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const LoadingPage();
@@ -1196,19 +1162,14 @@ class MatchStatistique extends StatelessWidget {
 }
 
 class MatchFixture extends StatelessWidget {
-  const MatchFixture({
-    Key? key,
-    required this.api,
-    required this.widget,
-  }) : super(key: key);
-
-  final API api;
-  final EquipeFixture widget;
+  final API api = API();
+  MatchFixture({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    int id = context.watch<int>();
     return FutureBuilder<dio.Response>(
-        future: api.getFixtureTeam(30, widget.team!.team_v2!.id!),
+        future: api.getFixtureTeam(30, id),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const LoadingPage();

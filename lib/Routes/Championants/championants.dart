@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:api_football/Models/historique_model.dart';
 import 'package:api_football/Models/league.dart';
 import 'package:api_football/Utils/api.dart';
 import 'package:api_football/Utils/convertion.dart';
 import 'package:api_football/Widgets/constants/loading.dart';
+import 'package:api_football/Widgets/page.dart';
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
 
@@ -193,7 +195,23 @@ class LeagueItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          historiqueList.add(HistoriqueModel(
+            name: league.league_v1!.name,
+            route: "/championants/" +
+                league.league_v1!.id.toString() +
+                "/" +
+                league.seasons!.last.start!,
+            image: league.league_v1!.logo!,
+          ));
+
+          Get.toNamed(
+            "/championants/" +
+                league.league_v1!.id.toString() +
+                "/" +
+                league.seasons!.last.start!,
+          );
+        },
         radius: 20,
         borderRadius: BorderRadius.circular(10),
         child: Padding(

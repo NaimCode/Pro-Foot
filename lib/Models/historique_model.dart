@@ -1,55 +1,29 @@
 import 'dart:convert';
 
-import 'package:api_football/Models/league.dart';
-import 'package:api_football/Models/team.dart';
-import 'package:api_football/Routes/Equipe/equipe_fixture.dart';
-import 'package:api_football/Utils/api.dart';
-import 'package:api_football/Widgets/page.dart';
 import 'package:get/get.dart';
 
 class HistoriqueModel {
   String? image;
   String? name;
-  String? type;
-  String? id;
+  String? route;
 
-  goTo() async {
-    API api = API();
-
-    switch (type) {
-      case "equipe":
-        var response = await api.getTeams(name!);
-        Team team =
-            response.data.map((l) => Team.fromMap(l)).toList().cast<Team>()[0];
-        Get.to(
-          Root(page: EquipeFixture(team: team)),
-          routeName: "/equipes/" + team.team_v2!.id.toString(),
-          transition: Transition.leftToRight,
-          duration: const Duration(milliseconds: 500),
-        );
-        break;
-      default:
-    }
-  }
+  goTo() => Get.toNamed(route!);
 
   HistoriqueModel({
     this.image,
     this.name,
-    this.type,
-    this.id,
+    this.route,
   });
 
   HistoriqueModel copyWith({
     String? image,
     String? name,
-    String? type,
-    String? id,
+    String? route,
   }) {
     return HistoriqueModel(
       image: image ?? this.image,
       name: name ?? this.name,
-      type: type ?? this.type,
-      id: id ?? this.id,
+      route: route ?? this.route,
     );
   }
 
@@ -57,8 +31,7 @@ class HistoriqueModel {
     return {
       'image': image,
       'name': name,
-      'type': type,
-      'id': id,
+      'route': route,
     };
   }
 
@@ -66,8 +39,7 @@ class HistoriqueModel {
     return HistoriqueModel(
       image: map['image'],
       name: map['name'],
-      type: map['type'],
-      id: map['id'],
+      route: map['route'],
     );
   }
 
@@ -77,9 +49,8 @@ class HistoriqueModel {
       HistoriqueModel.fromMap(json.decode(source));
 
   @override
-  String toString() {
-    return 'HistoriqueModel(image: $image, name: $name, type: $type, id: $id)';
-  }
+  String toString() =>
+      'HistoriqueModel(image: $image, name: $name, route: $route)';
 
   @override
   bool operator ==(Object other) {
@@ -88,12 +59,9 @@ class HistoriqueModel {
     return other is HistoriqueModel &&
         other.image == image &&
         other.name == name &&
-        other.type == type &&
-        other.id == id;
+        other.route == route;
   }
 
   @override
-  int get hashCode {
-    return image.hashCode ^ name.hashCode ^ type.hashCode ^ id.hashCode;
-  }
+  int get hashCode => image.hashCode ^ name.hashCode ^ route.hashCode;
 }

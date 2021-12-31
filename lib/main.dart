@@ -1,4 +1,4 @@
-import 'package:api_football/Routes/404.dart';
+import 'package:api_football/Routes/verus/404.dart';
 import 'package:api_football/Routes/Championants/championants.dart';
 import 'package:api_football/Routes/Coachs/coachs.dart';
 import 'package:api_football/Routes/Equipe/equipe.dart';
@@ -6,10 +6,14 @@ import 'package:api_football/Routes/Matchs/matchs.dart';
 import 'package:api_football/Routes/Pays/pays.dart';
 import 'package:api_football/Utils/Theme.dart';
 import 'package:api_football/Widgets/page.dart';
+import 'package:api_football/Routes/Equipe/bodyPlayers.dart';
+import 'package:api_football/test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/route_manager.dart';
+import 'package:provider/provider.dart';
 
+import 'Routes/Equipe/equipe_fixture.dart';
 import 'Routes/Home/home.dart';
 
 void main() {
@@ -38,7 +42,7 @@ class Main extends StatelessWidget {
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
-           GetPage(
+        GetPage(
           name: "/home",
           page: () => const Root(page: Home()),
           transition: Transition.leftToRight,
@@ -47,6 +51,12 @@ class Main extends StatelessWidget {
         GetPage(
           name: "/equipes",
           page: () => const Root(page: Equipes()),
+          transition: Transition.leftToRight,
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+        GetPage(
+          name: "/equipes/:id",
+          page: () => Root(page: EquipeFixture()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
@@ -71,6 +81,12 @@ class Main extends StatelessWidget {
         GetPage(
           name: "/pays",
           page: () => const Root(page: PagePays()),
+          transition: Transition.leftToRight,
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+        GetPage(
+          name: "/championants/:league/:season",
+          page: () => const Root(page: BodyClassement()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),
