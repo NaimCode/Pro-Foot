@@ -27,6 +27,9 @@ class EquipeFixture extends StatefulWidget {
 enum _Filter { matchs, players, statistics }
 
 Rx<_Filter> _filter = _Filter.matchs.obs;
+List<League> _leagues = [];
+RxInt _leagueSelected = 0.obs;
+List<Fixture> _fixtures = [];
 
 class _EquipeFixtureState extends State<EquipeFixture> {
   API api = API();
@@ -35,7 +38,7 @@ class _EquipeFixtureState extends State<EquipeFixture> {
     _leagues.clear();
 
     _fixtures.clear();
-    _filter.value = _Filter.matchs;
+    //_filter.value = _Filter.matchs;
     // TODO: implement initState
     super.initState();
   }
@@ -106,9 +109,6 @@ class BodyStatistique extends StatefulWidget {
   _BodyStatistiqueState createState() => _BodyStatistiqueState();
 }
 
-RxList _leagues = [].obs;
-RxInt _leagueSelected = 0.obs;
-
 class _BodyStatistiqueState extends State<BodyStatistique> {
   API api = API();
   @override
@@ -123,7 +123,7 @@ class _BodyStatistiqueState extends State<BodyStatistique> {
               }
 
               if (snapshot.hasData) {
-                _leagues.value = snapshot.data!.data
+                _leagues = snapshot.data!.data
                     .map((l) => League.fromMap(l))
                     .toList()
                     .cast<League>();
@@ -248,8 +248,6 @@ class MatchStatistique extends StatelessWidget {
   }
 }
 
-List<Fixture> _fixtures = [];
-
 class MatchFixture extends StatelessWidget {
   final API api = API();
   MatchFixture({Key? key}) : super(key: key);
@@ -302,7 +300,7 @@ class _TeamStateState extends State<TeamState> {
     int id = context.watch<int>();
     return Obx(() => FutureBuilder<dio.Response>(
           future: API().getTeamStatistic(
-              "?team=$id&league=${_leagues[_leagueSelected.value].league_v1.id}&season=${_leagues[_leagueSelected.value].seasons.last.year}"),
+              "?team=$id&league=${_leagues[_leagueSelected.value].league_v1!.id}&season=${_leagues[_leagueSelected.value].seasons!.last.year}"),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoadingPage();

@@ -9,6 +9,7 @@ Color borderColor = const Color(0xFF606168);
 
 ThemeData appTheme = ThemeData(
   primaryColor: primaryColor,
+
   scaffoldBackgroundColor: bgColor,
   appBarTheme: AppBarTheme(
     backgroundColor: bgColor,

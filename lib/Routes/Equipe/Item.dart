@@ -1,5 +1,3 @@
-
-
 import 'package:api_football/Models/fixture.dart';
 import 'package:api_football/Routes/Matchs/match_detail.dart';
 import 'package:api_football/Widgets/page.dart';
@@ -21,17 +19,17 @@ class FixtureItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
-        onTap: () {
-          Get.to(
-            Root(
-                page: MatchDetail(
-              fixture: fixture,
-            )),
-            routeName: "/matchs/" + fixture.id.toString(),
-            transition: Transition.leftToRight,
-            duration: const Duration(milliseconds: 500),
-          );
-        },
+        // onTap: () {
+        //   Get.to(
+        //     Root(
+        //         page: MatchDetail(
+        //       fixture: fixture,
+        //     )),
+        //     routeName: "/matchs/" + fixture.id.toString(),
+        //     transition: Transition.leftToRight,
+        //     duration: const Duration(milliseconds: 500),
+        //   );
+        // },
         radius: 20,
         borderRadius: BorderRadius.circular(10),
         child: Padding(
