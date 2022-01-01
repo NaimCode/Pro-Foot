@@ -109,6 +109,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 00),
         child: Obx(() => Scaffold(
@@ -116,15 +117,20 @@ class Body extends StatelessWidget {
               automaticallyImplyLeading: false,
               centerTitle: false,
               title: Text(_title.value,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4!
-                      .copyWith(color: Colors.blue[100])),
+                  style: m
+                      ? Theme.of(context)
+                          .textTheme
+                          .headline6!
+                          .copyWith(color: Colors.blue[100])
+                      : Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .copyWith(color: Colors.blue[100])),
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: GridView.count(
-                crossAxisCount: 2,
+                crossAxisCount: m ? 1 : 2,
                 childAspectRatio: 10 / 2,
                 shrinkWrap: true,
                 controller: ScrollController(),
@@ -145,6 +151,7 @@ class teamItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 3),
       decoration: BoxDecoration(
@@ -153,24 +160,14 @@ class teamItem extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-           Box box = Hive.box("historique");
-          // historiqueList.addIf(
-          //     !historiqueList
-          //         .any((element) => element.name == league.team_v2!.name),
-          //     HistoriqueModel(
-          //       name: league.team_v2!.name,
-          //       route: "/equipes/" + league.team_v2!.id.toString(),
-          //       image: league.team_v2!.logo!,
-          //     ));
-
-          if (!box.values.any((element) => element.name == league.team_v2!.name)) {
-            box.add(
-              HistoriqueModel(
-                name: league.team_v2!.name,
-                route: "/equipes/" + league.team_v2!.id.toString(),
-                image: league.team_v2!.logo!,
-              ));
-           
+          Box box = Hive.box("historique");
+          if (!box.values
+              .any((element) => element.name == league.team_v2!.name)) {
+            box.add(HistoriqueModel(
+              name: league.team_v2!.name,
+              route: "/equipes/" + league.team_v2!.id.toString(),
+              image: league.team_v2!.logo!,
+            ));
           }
           Get.toNamed("/equipes/" + league.team_v2!.id.toString());
         },
@@ -194,8 +191,8 @@ class teamItem extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                width: 30,
+              SizedBox(
+                width: m ? 20 : 30,
               ),
               Text(
                 league.team_v2!.name!,

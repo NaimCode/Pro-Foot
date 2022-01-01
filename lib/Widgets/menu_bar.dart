@@ -16,42 +16,45 @@ class _MenuBarState extends State<MenuBar> {
     return Container(
       width: 140,
       decoration: BoxDecoration(
+        color: Theme.of(context).appBarTheme.backgroundColor,
         shape: BoxShape.rectangle,
         border: Border(
           right: BorderSide(color: Theme.of(context).dividerColor),
         ),
       ),
-      child: Column(
-        children: [
-          const Logo(),
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                  border: Border(
-                bottom: BorderSide(
-                    color: Theme.of(context).dividerColor.withOpacity(0.50)),
-                top: BorderSide(
-                    color: Theme.of(context).dividerColor.withOpacity(0.50)),
-              )),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: listMenu.map((e) => MenuItem(menu: e)).toList(),
+      child: SafeArea(
+        child: Column(
+          children: [
+            const Logo(),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                    border: Border(
+                  bottom: BorderSide(
+                      color: Theme.of(context).dividerColor.withOpacity(0.50)),
+                  top: BorderSide(
+                      color: Theme.of(context).dividerColor.withOpacity(0.50)),
+                )),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: listMenu.map((e) => MenuItem(menu: e)).toList(),
+                  ),
                 ),
               ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 5),
-            child: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.settings,
-                    color:
-                        Theme.of(context).iconTheme.color!.withOpacity(0.4))),
-          )
-        ],
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.settings,
+                      color:
+                          Theme.of(context).iconTheme.color!.withOpacity(0.4))),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -63,12 +66,16 @@ class MenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     bool isHome = Get.currentRoute == "/";
     bool isCurrent = isHome ? isHome : Get.currentRoute.contains(menu['route']);
     return InkWell(
       // hoverColor: Colors.transparent,
       // highlightColor: Colors.transparent,
       onTap: () {
+        if (m) {
+          Navigator.of(context).pop();
+        }
         Get.toNamed(menu['route']);
       },
       child: Padding(
@@ -78,6 +85,7 @@ class MenuItem extends StatelessWidget {
           children: [
             Icon(
               menu['icon'],
+              size: m ? 30 : null,
               color: isCurrent
                   ? Theme.of(context).iconTheme.color
                   : Theme.of(context).iconTheme.color!.withOpacity(0.4),

@@ -1,6 +1,7 @@
 import 'package:api_football/Models/historique_model.dart';
 import 'package:api_football/Widgets/page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
@@ -12,24 +13,28 @@ class Historique extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return ValueListenableBuilder<Box>(
         valueListenable: Hive.box('historique').listenable(),
         builder: (context, box, widget) {
           return Container(
-              width: 300,
+              width: m ? double.infinity : 300,
               padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
               decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                border: Border(
-                  left: BorderSide(color: Theme.of(context).dividerColor),
-                ),
+                color: Theme.of(context).appBarTheme.backgroundColor,
+                //shape: BoxShape.rectangle,
+                border: m
+                    ? null
+                    : Border(
+                        left: BorderSide(color: Theme.of(context).dividerColor),
+                      ),
               ),
               child: Scaffold(
                 appBar: AppBar(
                   centerTitle: false,
                   automaticallyImplyLeading: false,
                   title: Opacity(
-                    opacity: 0.4,
+                    opacity: 0.7,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -40,7 +45,7 @@ class Historique extends StatelessWidget {
                         IconButton(
                             tooltip: "Effacer l'historique",
                             onPressed: Hive.box("historique").clear,
-                            icon: const Icon(Icons.history))
+                            icon: const Icon(Icons.delete))
                       ],
                     ),
                   ),
@@ -75,8 +80,8 @@ class HistoriqueItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 3),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor.withOpacity(0.4),
         borderRadius: BorderRadius.circular(10),
@@ -100,10 +105,15 @@ class HistoriqueItem extends StatelessWidget {
                     : Colors.white70,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Image.network(
-                    historique.image!,
-                    fit: BoxFit.fitHeight,
-                  ),
+                  child: m && historique.image!.contains("svg")
+                      ? SvgPicture.network(
+                          historique.image!,
+                          fit: BoxFit.fitHeight,
+                        )
+                      : Image.network(
+                          historique.image!,
+                          fit: BoxFit.fitHeight,
+                        ),
                 ),
               ),
               const SizedBox(

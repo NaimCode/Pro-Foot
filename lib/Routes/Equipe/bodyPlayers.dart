@@ -22,7 +22,7 @@ class _BodyPlayersState extends State<BodyPlayers> {
   @override
   Widget build(BuildContext context) {
     int team = context.watch<int>();
-
+    bool m = MediaQuery.of(context).size.width <= 450;
     return FutureBuilder<dio.Response>(
         future: api.getPlayers("?team=$team&page=$page&season=2021"),
         builder: (context, snapshot) {
@@ -40,7 +40,8 @@ class _BodyPlayersState extends State<BodyPlayers> {
           }
           return Scaffold(
             bottomNavigationBar: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding:
+                  EdgeInsets.symmetric(vertical: 10, horizontal: m ? 30 : 0),
               height: 60,
               child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                 const Expanded(
@@ -83,11 +84,11 @@ class _BodyPlayersState extends State<BodyPlayers> {
               child: GridView.builder(
                   shrinkWrap: true,
                   controller: ScrollController(),
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 260,
-                      childAspectRatio: 1.2,
-                      crossAxisSpacing: 40,
-                      mainAxisSpacing: 40),
+                      childAspectRatio: m ? 1.1 : 1.2,
+                      crossAxisSpacing: m ? 20 : 40,
+                      mainAxisSpacing: m ? 20 : 40),
                   itemCount: players.length,
                   itemBuilder: (context, index) =>
                       playerItem(coach: players[index])),

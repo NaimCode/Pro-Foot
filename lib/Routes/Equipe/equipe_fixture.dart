@@ -36,7 +36,6 @@ class _EquipeFixtureState extends State<EquipeFixture> {
   @override
   void initState() {
     _leagues.clear();
-
     _fixtures.clear();
     //_filter.value = _Filter.matchs;
     // TODO: implement initState
@@ -298,6 +297,7 @@ class _TeamStateState extends State<TeamState> {
   @override
   Widget build(BuildContext context) {
     int id = context.watch<int>();
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Obx(() => FutureBuilder<dio.Response>(
           future: API().getTeamStatistic(
               "?team=$id&league=${_leagues[_leagueSelected.value].league_v1!.id}&season=${_leagues[_leagueSelected.value].seasons!.last.year}"),
@@ -334,7 +334,10 @@ class _TeamStateState extends State<TeamState> {
                               opacity: 0.8,
                               child: Text(
                                 "Etats des derniers matchs",
-                                style: Theme.of(context).textTheme.headline6,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6!
+                                    .copyWith(fontWeight: FontWeight.w400),
                               ),
                             ),
                           ),
@@ -399,6 +402,8 @@ class _TeamStateState extends State<TeamState> {
                                               .textTheme
                                               .headline6!
                                               .copyWith(
+                                                  fontSize: m ? 18 : null,
+                                                  fontWeight: FontWeight.w400,
                                                   color: Colors.brown[100]),
                                         ),
                                       ),
@@ -415,9 +420,13 @@ class _TeamStateState extends State<TeamState> {
                                                   teamStatistic
                                                       .fixture_v1!.played!.home
                                                       .toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
                                               const SizedBox(
                                                 height: 8,
                                               ),
@@ -439,9 +448,13 @@ class _TeamStateState extends State<TeamState> {
                                                   teamStatistic
                                                       .fixture_v1!.played!.away
                                                       .toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
                                               const SizedBox(
                                                 height: 8,
                                               ),
@@ -463,9 +476,13 @@ class _TeamStateState extends State<TeamState> {
                                                   teamStatistic
                                                       .fixture_v1!.played!.total
                                                       .toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
                                               const SizedBox(
                                                 height: 8,
                                               ),
@@ -506,127 +523,13 @@ class _TeamStateState extends State<TeamState> {
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 4, horizontal: 5),
                                         child: Text(
-                                          "Matchs gagnés",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6!
-                                              .copyWith(
-                                                  color: Colors.blue[100]),
-                                        ),
-                                      ),
-                                      const Divider(),
-                                      Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text(
-                                                    teamStatistic
-                                                        .fixture_v1!.wins!.home
-                                                        .toString(),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline4),
-                                                const SizedBox(
-                                                  height: 8,
-                                                ),
-                                                Opacity(
-                                                    opacity: 0.4,
-                                                    child: Text(
-                                                      "Domicile",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText2!
-                                                          .copyWith(
-                                                              fontSize: 10),
-                                                    ))
-                                              ],
-                                            ),
-                                            Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text(
-                                                    teamStatistic
-                                                        .fixture_v1!.wins!.away
-                                                        .toString(),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline4),
-                                                const SizedBox(
-                                                  height: 8,
-                                                ),
-                                                Opacity(
-                                                    opacity: 0.4,
-                                                    child: Text(
-                                                      "Extérieur",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText2!
-                                                          .copyWith(
-                                                              fontSize: 10),
-                                                    ))
-                                              ],
-                                            ),
-                                            Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text(
-                                                    teamStatistic
-                                                        .fixture_v1!.wins!.total
-                                                        .toString(),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline4),
-                                                const SizedBox(
-                                                  height: 8,
-                                                ),
-                                                Opacity(
-                                                  opacity: 0.4,
-                                                  child: Text(
-                                                    "Total",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText2!
-                                                        .copyWith(fontSize: 10),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  height: 130,
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 10),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context)
-                                        .primaryColor
-                                        .withOpacity(0.4),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 4, horizontal: 5),
-                                        child: Text(
                                           "Matchs nuls",
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline6!
                                               .copyWith(
+                                                  fontSize: m ? 18 : null,
+                                                  fontWeight: FontWeight.w400,
                                                   color: Colors.yellow[100]),
                                         ),
                                       ),
@@ -643,9 +546,13 @@ class _TeamStateState extends State<TeamState> {
                                                   teamStatistic
                                                       .fixture_v1!.draws!.home
                                                       .toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
                                               const SizedBox(
                                                 height: 8,
                                               ),
@@ -667,9 +574,13 @@ class _TeamStateState extends State<TeamState> {
                                                   teamStatistic
                                                       .fixture_v1!.draws!.away
                                                       .toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
                                               const SizedBox(
                                                 height: 8,
                                               ),
@@ -691,9 +602,13 @@ class _TeamStateState extends State<TeamState> {
                                                   teamStatistic
                                                       .fixture_v1!.draws!.total
                                                       .toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
                                               const SizedBox(
                                                 height: 8,
                                               ),
@@ -738,10 +653,13 @@ class _TeamStateState extends State<TeamState> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline6!
-                                              .copyWith(color: Colors.red[100]),
+                                              .copyWith(
+                                                  fontSize: m ? 18 : null,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.red[100]),
                                         ),
                                       ),
-                                      Divider(),
+                                      const Divider(),
                                       Expanded(
                                           child: Row(
                                         mainAxisAlignment:
@@ -754,9 +672,13 @@ class _TeamStateState extends State<TeamState> {
                                                   teamStatistic
                                                       .fixture_v1!.loses!.home
                                                       .toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
                                               const SizedBox(
                                                 height: 8,
                                               ),
@@ -778,9 +700,13 @@ class _TeamStateState extends State<TeamState> {
                                                   teamStatistic
                                                       .fixture_v1!.loses!.away
                                                       .toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
                                               const SizedBox(
                                                 height: 8,
                                               ),
@@ -802,9 +728,13 @@ class _TeamStateState extends State<TeamState> {
                                                   teamStatistic
                                                       .fixture_v1!.loses!.total
                                                       .toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
                                               const SizedBox(
                                                 height: 8,
                                               ),
@@ -852,11 +782,141 @@ class _TeamStateState extends State<TeamState> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 4, horizontal: 5),
                                       child: Text(
+                                        "Matchs gagnés",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .copyWith(
+                                                fontSize: m ? 18 : null,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.blue[100]),
+                                      ),
+                                    ),
+                                    const Divider(),
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                  teamStatistic
+                                                      .fixture_v1!.wins!.home
+                                                      .toString(),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Opacity(
+                                                  opacity: 0.4,
+                                                  child: Text(
+                                                    "Domicile",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText2!
+                                                        .copyWith(fontSize: 10),
+                                                  ))
+                                            ],
+                                          ),
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                  teamStatistic
+                                                      .fixture_v1!.wins!.away
+                                                      .toString(),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Opacity(
+                                                  opacity: 0.4,
+                                                  child: Text(
+                                                    "Extérieur",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText2!
+                                                        .copyWith(fontSize: 10),
+                                                  ))
+                                            ],
+                                          ),
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                  teamStatistic
+                                                      .fixture_v1!.wins!.total
+                                                      .toString(),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Opacity(
+                                                opacity: 0.4,
+                                                child: Text(
+                                                  "Total",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2!
+                                                      .copyWith(fontSize: 10),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                height: 130,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 10),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4, horizontal: 5),
+                                      child: Text(
                                         "Buts marqués",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6!
-                                            .copyWith(color: Colors.brown[100]),
+                                            .copyWith(
+                                                fontSize: m ? 18 : null,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.brown[100]),
                                       ),
                                     ),
                                     const Divider(),
@@ -871,9 +931,13 @@ class _TeamStateState extends State<TeamState> {
                                             Text(
                                                 teamStatistic.goal!.forr!.home
                                                     .toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline4),
+                                                style: m
+                                                    ? Theme.of(context)
+                                                        .textTheme
+                                                        .headline5
+                                                    : Theme.of(context)
+                                                        .textTheme
+                                                        .headline4),
                                             const SizedBox(
                                               height: 8,
                                             ),
@@ -894,9 +958,13 @@ class _TeamStateState extends State<TeamState> {
                                             Text(
                                                 teamStatistic.goal!.forr!.away
                                                     .toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline4),
+                                                style: m
+                                                    ? Theme.of(context)
+                                                        .textTheme
+                                                        .headline5
+                                                    : Theme.of(context)
+                                                        .textTheme
+                                                        .headline4),
                                             const SizedBox(
                                               height: 8,
                                             ),
@@ -917,9 +985,13 @@ class _TeamStateState extends State<TeamState> {
                                             Text(
                                                 teamStatistic.goal!.forr!.total
                                                     .toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline4),
+                                                style: m
+                                                    ? Theme.of(context)
+                                                        .textTheme
+                                                        .headline5
+                                                    : Theme.of(context)
+                                                        .textTheme
+                                                        .headline4),
                                             const SizedBox(
                                               height: 8,
                                             ),
@@ -963,7 +1035,10 @@ class _TeamStateState extends State<TeamState> {
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6!
-                                            .copyWith(color: Colors.blue[100]),
+                                            .copyWith(
+                                                fontSize: m ? 18 : null,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.blue[100]),
                                       ),
                                     ),
                                     const Divider(),
@@ -979,9 +1054,13 @@ class _TeamStateState extends State<TeamState> {
                                                   teamStatistic
                                                       .goal!.against!.home
                                                       .toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
                                               const SizedBox(
                                                 height: 8,
                                               ),
@@ -1003,9 +1082,13 @@ class _TeamStateState extends State<TeamState> {
                                                   teamStatistic
                                                       .goal!.against!.away
                                                       .toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
                                               const SizedBox(
                                                 height: 8,
                                               ),
@@ -1027,9 +1110,13 @@ class _TeamStateState extends State<TeamState> {
                                                   teamStatistic
                                                       .goal!.against!.total
                                                       .toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
+                                                  style: m
+                                                      ? Theme.of(context)
+                                                          .textTheme
+                                                          .headline5
+                                                      : Theme.of(context)
+                                                          .textTheme
+                                                          .headline4),
                                               const SizedBox(
                                                 height: 8,
                                               ),

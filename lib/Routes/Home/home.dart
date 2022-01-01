@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    Color pc = Theme.of(context).primaryColor;
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -30,38 +30,45 @@ class _HomeState extends State<Home> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: m ? 10 : 30,
                 ),
                 const Logo(),
-                const SizedBox(
-                  height: 50,
+                SizedBox(
+                  height: m ? 20 : 50,
                 ),
                 const Text(
                   'BIENVENUE A',
                   style:
                       TextStyle(fontWeight: FontWeight.w200, letterSpacing: 4),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: m ? 10 : 20),
                   child: Text(
                     '• PRO FOOT •',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 60),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: m ? 49 : 60),
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 500,
-                  child: Text(
-                    "Vous trouverez ici tout sur les meilleures équipes du monde entier. Les championants les plus suivis ainsi que les moins, les dernières nouvelles, des statistiques en détail et bien plus encore.",
-                    style: TextStyle(color: Colors.white70),
-                    textAlign: TextAlign.center,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      "Vous trouverez ici tout sur les meilleures équipes du monde entier. Les championants les plus suivis ainsi que les moins, les dernières nouvelles, des statistiques en détail et bien plus encore.",
+                      style: TextStyle(
+                          color: Colors.white70, fontSize: m ? 14 : null),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
                 const SizedBox(
                   height: 30,
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
+                Wrap(
+                  runAlignment: WrapAlignment.center,
+                  alignment: WrapAlignment.center,
+                  runSpacing: 0,
                   children: listMenu
                       .where((element) => element['titre'] != "Home")
                       .map((menu) => HomeMenu(
@@ -82,6 +89,7 @@ class HomeMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return InkWell(
       onTap: () {
         Get.toNamed(menu['route']);
@@ -89,22 +97,27 @@ class HomeMenu extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: SizedBox(
-          width: 130,
-          height: 100,
+          width: m ? 100 : 130,
+          height: m ? 70 : 100,
           child: Card(
             color: Theme.of(context).cardColor.withOpacity(0.8),
             child: Opacity(
               opacity: 0.9,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(menu['icon'], color: Theme.of(context).iconTheme.color),
-                  const SizedBox(height: 5),
-                  Text(
-                    menu['titre'],
-                    style: const TextStyle(fontWeight: FontWeight.w200),
-                  ),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(menu['icon'],
+                        color: Theme.of(context).iconTheme.color),
+                    const SizedBox(height: 5),
+                    Text(
+                      menu['titre'],
+                      style: TextStyle(
+                          fontWeight: FontWeight.w200, fontSize: m ? 10 : null),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

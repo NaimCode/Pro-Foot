@@ -11,9 +11,9 @@ class FixtureItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // DateTime date = Datetime
-
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 3),
+      margin: EdgeInsets.symmetric(vertical: 3, horizontal: m ? 15 : 0),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor.withOpacity(0.4),
         borderRadius: BorderRadius.circular(10),
@@ -59,36 +59,69 @@ class FixtureItem extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(
+                height: m ? 10 : 0,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          fixture.homeTeam!.name!,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(color: Colors.white54),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.white70,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Image.network(
-                              fixture.homeTeam!.logo!,
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    child:
+                        //Mobile section
+                        m
+                            ? Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: Colors.white70,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Image.network(
+                                        fixture.homeTeam!.logo!,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    fixture.homeTeam!.name!,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                ],
+                              )
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    fixture.homeTeam!.name!,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: Colors.white70,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Image.network(
+                                        fixture.homeTeam!.logo!,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                   ),
                   Container(
                     width: 150,
@@ -117,31 +150,59 @@ class FixtureItem extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.white70,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Image.network(
-                              fixture.awayTeam!.logo!,
-                              fit: BoxFit.fitHeight,
-                            ),
+                    child: m
+                        ? Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.white70,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Image.network(
+                                    fixture.awayTeam!.logo!,
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                fixture.awayTeam!.name!,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.white70,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Image.network(
+                                    fixture.awayTeam!.logo!,
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                fixture.awayTeam!.name!,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ],
                           ),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          fixture.awayTeam!.name!,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(color: Colors.white54),
-                        ),
-                      ],
-                    ),
                   )
                 ],
               ),

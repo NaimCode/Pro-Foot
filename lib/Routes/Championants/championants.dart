@@ -104,43 +104,114 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 00),
-        child: Obx(() => Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              centerTitle: false,
-              title: Text(_title.value,
-                  style: Theme.of(context)
+        child: m
+            ? const MobileBody()
+            : Obx(() => Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  centerTitle: false,
+                  title: Text(_title.value,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .copyWith(color: Colors.blue[100])),
+                ),
+                body: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: LeagueContainer(
+                          leagues: _leagues
+                              .where((l) => l.league_v1.type == "League")
+                              .toList(growable: false)
+                              .cast(),
+                          title: "Ligues",
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 40,
+                      ),
+                      Expanded(
+                        child: LeagueContainer(
+                          leagues: _leagues
+                              .where((l) => l.league_v1.type == "Cup")
+                              .toList(growable: false)
+                              .cast<League>(),
+                          title: "Coupes",
+                        ),
+                      ),
+                    ],
+                  ),
+                ))));
+  }
+}
+
+class MobileBody extends StatelessWidget {
+  const MobileBody({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                child: Text(
+                  "Ligues",
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+              ),
+              Tab(
+                  child: Text(
+                "Coupes",
+                style: Theme.of(context).textTheme.bodyText2,
+              )),
+            ],
+          ),
+          automaticallyImplyLeading: false,
+          centerTitle: false,
+          title: Text(_title.value,
+              style: m
+                  ? Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .copyWith(color: Colors.blue[50])
+                  : Theme.of(context)
                       .textTheme
                       .headline4!
                       .copyWith(color: Colors.blue[100])),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  LeagueContainer(
-                    leagues: _leagues
-                        .where((l) => l.league_v1.type == "League")
-                        .toList(growable: false)
-                        .cast(),
-                    title: "Ligues",
-                  ),
-                  const SizedBox(
-                    width: 40,
-                  ),
-                  LeagueContainer(
-                    leagues: _leagues
-                        .where((l) => l.league_v1.type == "Cup")
-                        .toList(growable: false)
-                        .cast<League>(),
-                    title: "Coupes",
-                  ),
-                ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: TabBarView(
+            children: [
+              LeagueContainer(
+                leagues: _leagues
+                    .where((l) => l.league_v1.type == "League")
+                    .toList(growable: false)
+                    .cast(),
+                title: "Ligues",
               ),
-            ))));
+              LeagueContainer(
+                leagues: _leagues
+                    .where((l) => l.league_v1.type == "Cup")
+                    .toList(growable: false)
+                    .cast<League>(),
+                title: "Coupes",
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -156,20 +227,22 @@ class LeagueContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: SingleChildScrollView(
+    bool m = MediaQuery.of(context).size.width <= 450;
+    return SingleChildScrollView(
       controller: ScrollController(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Opacity(
-            opacity: 0.5,
-            child: Text(
-              "$title: ${leagues.length > 20 ? 20 : leagues.length}",
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          ),
+          m
+              ? const SizedBox()
+              : Opacity(
+                  opacity: 0.5,
+                  child: Text(
+                    "$title: ${leagues.length > 20 ? 20 : leagues.length}",
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                ),
           const SizedBox(
             height: 10,
           ),
@@ -179,7 +252,7 @@ class LeagueContainer extends StatelessWidget {
               .toList()
         ],
       ),
-    ));
+    );
   }
 }
 
@@ -198,19 +271,6 @@ class LeagueItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Box box = Hive.box("historique");
-          // historiqueList.addIf(
-          //     !historiqueList
-          //         .any((element) => element.name == league.league_v1!.name),
-          //     HistoriqueModel(
-          //       name: league.league_v1!.name,
-          //       route: "/championants/" +
-          //           league.league_v1!.id.toString() +
-          //           "/" +
-          //           league.seasons!.last.year!.toString(),
-          //       image: league.league_v1!.logo!,
-          //     )
-          // );
-
           if (!box.values
               .any((element) => element.name == league.league_v1!.name)) {
             box.add(HistoriqueModel(

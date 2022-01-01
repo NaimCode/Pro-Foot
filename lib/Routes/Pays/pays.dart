@@ -1,9 +1,8 @@
 import 'package:api_football/Models/country.dart';
 import 'package:api_football/Models/historique_model.dart';
-import 'package:api_football/Routes/Pays/countryItem.dart';
 import 'package:api_football/Utils/convertion.dart';
-import 'package:api_football/Widgets/page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
@@ -65,6 +64,7 @@ class _PagePaysState extends State<PagePays> {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Scaffold(
       appBar: PreferredSize(
         child: AppBar(
@@ -130,6 +130,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Obx(
@@ -139,17 +140,22 @@ class Body extends StatelessWidget {
             children: [
               Text(
                 _title.value,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(color: Colors.blue[50]),
+                style: m
+                    ? Theme.of(context)
+                        .textTheme
+                        .headline6!
+                        .copyWith(color: Colors.blue[50])
+                    : Theme.of(context)
+                        .textTheme
+                        .headline4!
+                        .copyWith(color: Colors.blue[50]),
               ),
               const SizedBox(
                 height: 20,
               ),
               GridView.count(
                 crossAxisCount: 2,
-                childAspectRatio: 10 / 2,
+                childAspectRatio: m ? 4 / 2 : 10 / 2,
                 shrinkWrap: true,
                 controller: ScrollController(),
                 crossAxisSpacing: 13,
@@ -160,17 +166,6 @@ class Body extends StatelessWidget {
                     .map((e) => countryiItem(league: e))
                     .toList(),
               ),
-              // GridView.builder(
-              //     shrinkWrap: true,
-              //     controller: ScrollController(),
-              //     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              //         maxCrossAxisExtent: 250,
-              //         childAspectRatio: 3 / 2,
-              //         crossAxisSpacing: 40,
-              //         mainAxisSpacing: 40),
-              //     itemCount: _countries.length,
-              //     itemBuilder: (context, index) =>
-              //         CountryItem(country: _countries[index])),
             ],
           )),
         ));
@@ -183,6 +178,7 @@ class countryiItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 3),
       decoration: BoxDecoration(
@@ -192,19 +188,6 @@ class countryiItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Box box = Hive.box("historique");
-          // HistoriqueModel historiqueModel = HistoriqueModel(
-          //   name: league.name,
-          //   route: "/pays/" + league.code.toString(),
-          //   image: league.flag,
-          // );
-          // historiqueList.addIf(
-          //     !historiqueList.any((element) => element.name == league.name),
-          //     HistoriqueModel(
-          //       name: league.name,
-          //       route: "/pays/" + league.code.toString(),
-          //       image: league.flag,
-          //     ));
-
           if (!box.values.any((element) => element.name == league.name)) {
             box.add(HistoriqueModel(
               name: league.name,
@@ -220,27 +203,34 @@ class countryiItem extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: m ? 2 : 10,
               ),
               CircleAvatar(
                 radius: 30,
                 backgroundColor: Colors.white70,
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Image.network(
-                    league.flag!,
-                    scale: 3.0,
-                    fit: BoxFit.fitHeight,
-                  ),
+                  padding: EdgeInsets.all(m ? 15 : 10.0),
+                  child: m
+                      ? SvgPicture.network(
+                          league.flag!,
+                          fit: BoxFit.fitHeight,
+                        )
+                      : Image.network(
+                          league.flag!,
+                          scale: 3.0,
+                          fit: BoxFit.fitHeight,
+                        ),
                 ),
               ),
-              const SizedBox(
-                width: 30,
+              SizedBox(
+                width: m ? 10 : 30,
               ),
-              Text(
-                league.name!,
-                style: Theme.of(context).textTheme.subtitle1,
+              Flexible(
+                child: Text(
+                  league.name!,
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
               )
             ],
           ),

@@ -22,8 +22,7 @@ class _BodyClassementState extends State<BodyClassement> {
 
   @override
   Widget build(BuildContext context) {
-    Get.parameters['league'].printInfo();
-    Get.parameters['season'].printInfo();
+    bool m = MediaQuery.of(context).size.width <= 450;
     return FutureBuilder<dio.Response>(
         future: api.getLeagueClassement(
             "?league=${Get.parameters['league']}&season=${Get.parameters['season']}"),
@@ -47,30 +46,35 @@ class _BodyClassementState extends State<BodyClassement> {
                         controller: ScrollController(),
                         child: Center(
                           child: DataTable(
+                              columnSpacing: m ? 10 : 0,
+                              horizontalMargin: 20,
                               showCheckboxColumn: false,
-                              columns: const [
+                              columns: [
                                 DataColumn(
-                                    label: ColumnItem(text: "Classement"),
+                                    label:
+                                        ColumnItem(text: m ? "" : "Classement"),
                                     numeric: true),
-                                DataColumn(label: ColumnItem(text: "Equipe")),
-                                DataColumn(
+                                const DataColumn(
+                                    label: ColumnItem(text: "Equipe")),
+                                const DataColumn(
                                     label: ColumnItem(text: "Victoires"),
                                     numeric: true),
-                                DataColumn(
+                                const DataColumn(
                                     label: ColumnItem(text: "Nuls"),
                                     numeric: true),
-                                DataColumn(
+                                const DataColumn(
                                     label: ColumnItem(text: "Défaites"),
                                     numeric: true),
-                                DataColumn(label: ColumnItem(text: "Matchs")),
+                                const DataColumn(
+                                    label: ColumnItem(text: "Matchs")),
                                 // DataColumn(
                                 //     label: ColumnItem(text: "Marqués"), numeric: true),
                                 // DataColumn(
                                 //     label: ColumnItem(text: "Encaissés"), numeric: true),
-                                DataColumn(
+                                const DataColumn(
                                     label: ColumnItem(text: "Points"),
                                     numeric: true),
-                                DataColumn(
+                                const DataColumn(
                                     label: ColumnItem(text: "Différence"),
                                     numeric: true),
                               ],

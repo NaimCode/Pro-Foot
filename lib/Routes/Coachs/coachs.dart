@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'dart:convert';
 
 import 'package:api_football/Models/coach.dart';
@@ -106,6 +108,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 00),
         child: Obx(() => Scaffold(
@@ -113,22 +116,26 @@ class Body extends StatelessWidget {
                 automaticallyImplyLeading: false,
                 centerTitle: false,
                 title: Text(_title.value,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4!
-                        .copyWith(color: Colors.blue[100])),
+                    style: m
+                        ? Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(color: Colors.blue[100])
+                        : Theme.of(context)
+                            .textTheme
+                            .headline4!
+                            .copyWith(color: Colors.blue[100])),
               ),
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: GridView.builder(
                     shrinkWrap: true,
                     controller: ScrollController(),
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 260,
-                            childAspectRatio: 1.2,
-                            crossAxisSpacing: 40,
-                            mainAxisSpacing: 40),
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 260,
+                        childAspectRatio: m ? 1.1 : 1.2,
+                        crossAxisSpacing: m ? 20 : 40,
+                        mainAxisSpacing: m ? 20 : 40),
                     itemCount: _coaches.length,
                     itemBuilder: (context, index) =>
                         coachItem(coach: _coaches[index])),
@@ -153,7 +160,6 @@ class coachItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Box box = Hive.box('historique');
-
           if (!box.values.any((element) => element.name == coach.name)) {
             box.add(HistoriqueModel(
                 image: coach.photo,
