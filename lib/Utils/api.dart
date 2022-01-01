@@ -48,6 +48,14 @@ class API {
     return Dio().get(serverUrl + "/fr/coachs" + query);
   }
 
+  Future<Response> getTrophies(String query) async {
+    return Dio().get(serverUrl + "/fr/trophies" + query);
+  }
+
+  Future<Response> getSidelined(String query) async {
+    return Dio().get(serverUrl + "/fr/sidelined" + query);
+  }
+
   Future<Response> getFixture(int last) async {
     return Dio()
         .get(serverUrl + "/fr/fixtures", queryParameters: {"last": last});

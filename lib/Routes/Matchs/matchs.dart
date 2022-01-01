@@ -1,4 +1,5 @@
 import 'package:api_football/Models/fixture.dart';
+import 'package:api_football/Routes/Equipe/Item.dart';
 import 'package:api_football/Routes/Equipe/equipe_fixture.dart';
 import 'package:api_football/Routes/Home/home.dart';
 import 'package:api_football/Routes/Matchs/match_detail.dart';

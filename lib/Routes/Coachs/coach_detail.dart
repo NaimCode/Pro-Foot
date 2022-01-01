@@ -1,7 +1,9 @@
 import 'package:api_football/Models/coach.dart';
 import 'package:api_football/Models/historique_model.dart';
 import 'package:api_football/Models/primitives/career.dart';
+import 'package:api_football/Models/primitives/sidelined.dart';
 import 'package:api_football/Models/primitives/team_v1.dart';
+import 'package:api_football/Models/primitives/trophie.dart';
 import 'package:api_football/Utils/api.dart';
 import 'package:api_football/Widgets/constants/loading.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,12 @@ class CoachDetail extends StatefulWidget {
   @override
   _CoachDetailState createState() => _CoachDetailState();
 }
+
+enum _Filter { career, trophies, events }
+
+Rx<_Filter> _filter = _Filter.career.obs;
+List<Trophie> _trophies = [];
+List<Sidelined> _sidelined = [];
 
 class _CoachDetailState extends State<CoachDetail> {
   @override
@@ -80,15 +88,109 @@ class _CoachDetailState extends State<CoachDetail> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 40, bottom: 20),
-                    child: Opacity(
-                      opacity: 0.7,
-                      child: Text(
-                        "Carrières",
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
+                    child: Row(
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              _filter.value = _Filter.career;
+                            },
+                            child: Obx(() => Opacity(
+                                  opacity:
+                                      _filter.value == _Filter.career ? 1 : 0.5,
+                                  child: Text(
+                                    "Carrières",
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ))),
+                        const SizedBox(width: 40),
+                        TextButton(
+                            onPressed: () {
+                              _filter.value = _Filter.trophies;
+                            },
+                            child: Obx(() => Opacity(
+                                  opacity: _filter.value == _Filter.trophies
+                                      ? 1
+                                      : 0.5,
+                                  child: Text(
+                                    "Trophées",
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ))),
+                        const SizedBox(width: 40),
+                        TextButton(
+                            onPressed: () {
+                              _filter.value = _Filter.events;
+                            },
+                            child: Obx(() => Opacity(
+                                  opacity:
+                                      _filter.value == _Filter.events ? 1 : 0.5,
+                                  child: Text(
+                                    "Evénement",
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ))),
+                      ],
                     ),
                   ),
-                  ...coach.careers!.map((e) => teamItem(career: e))
+                  Obx(() => _filter.value == _Filter.career
+                      ? ListView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: coach.careers!
+                              .map((e) => teamItem(career: e))
+                              .toList())
+                      : _filter.value == _Filter.trophies
+                          ? _trophies.isNotEmpty
+                              ? const TrophieCoach()
+                              : FutureBuilder<dio.Response>(
+                                  future: API().getTrophies(
+                                      "?coach=" + coach.id.toString()),
+                                  builder: (context, snap) {
+                                    if (snap.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const SizedBox(
+                                        height: 300,
+                                        child: LoadingPage(),
+                                      );
+                                    }
+                                    if (snap.hasData) {
+                                      _trophies = snap.data!.data
+                                          .map((l) => Trophie.fromMap(l))
+                                          .toList()
+                                          .cast<Trophie>();
+                                    }
+                                    if (snap.hasError) {
+                                      print(snap.error);
+                                    }
+                                    return const TrophieCoach();
+                                  })
+                          : _sidelined.isNotEmpty
+                              ? const SidelinedCoach()
+                              : FutureBuilder<dio.Response>(
+                                  future: API().getSidelined(
+                                      "?coach=" + coach.id.toString()),
+                                  builder: (context, snap) {
+                                    if (snap.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const SizedBox(
+                                        height: 300,
+                                        child: LoadingPage(),
+                                      );
+                                    }
+                                    if (snap.hasData) {
+                                      _sidelined = snap.data!.data
+                                          .map((l) => Sidelined.fromMap(l))
+                                          .toList()
+                                          .cast<Sidelined>();
+                                    }
+                                    if (snap.hasError) {
+                                      print(snap.error);
+                                    }
+                                    return const SidelinedCoach();
+                                  }))
                 ],
               ),
             );
@@ -101,6 +203,185 @@ class _CoachDetailState extends State<CoachDetail> {
   }
 }
 
+class SidelinedCoach extends StatelessWidget {
+  const SidelinedCoach({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        children: _sidelined
+            .map((e) => Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(vertical: 3),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Row(
+                            children: [
+                              Text(
+                                e.type!,
+                                style: Theme.of(context).textTheme.subtitle1,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    e.start!,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Opacity(
+                                    opacity: 0.5,
+                                    child: Text(
+                                      "début",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .copyWith(fontSize: 12),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    e.end!,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Opacity(
+                                    opacity: 0.5,
+                                    child: Text(
+                                      "fin",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .copyWith(fontSize: 12),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ],
+                    ),
+                  ),
+                ))
+            .toList());
+  }
+}
+
+class TrophieCoach extends StatelessWidget {
+  const TrophieCoach({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        children: _trophies
+            .where((element) => element.place == "Winner")
+            .map((e) => Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(vertical: 3),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Row(
+                            children: [
+                              Text(
+                                e.league!,
+                                style: Theme.of(context).textTheme.subtitle1,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    e.season!,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Opacity(
+                                    opacity: 0.5,
+                                    child: Text(
+                                      "saison",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .copyWith(fontSize: 12),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ],
+                    ),
+                  ),
+                ))
+            .toList());
+  }
+}
+
 class CoachItemText extends StatelessWidget {
   final String title;
   final String? value;
@@ -109,7 +390,7 @@ class CoachItemText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return value == null
+    return value == "null"
         ? const SizedBox()
         : Padding(
             padding: const EdgeInsets.all(10.0),

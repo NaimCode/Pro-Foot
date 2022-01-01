@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:api_football/Models/coach.dart';
+
 class Player {
   int? id;
   String? name;
@@ -11,6 +13,10 @@ class Player {
   String? lastname;
   int? age;
   String? nationality;
+  String? height;
+  String? weight;
+
+  String? dateNaissance;
 
   Player({
     this.id,
@@ -93,31 +99,31 @@ class Player {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is Player &&
-      other.id == id &&
-      other.name == name &&
-      other.number == number &&
-      other.pos == pos &&
-      other.grid == grid &&
-      other.photo == photo &&
-      other.firstname == firstname &&
-      other.lastname == lastname &&
-      other.age == age &&
-      other.nationality == nationality;
+        other.id == id &&
+        other.name == name &&
+        other.number == number &&
+        other.pos == pos &&
+        other.grid == grid &&
+        other.photo == photo &&
+        other.firstname == firstname &&
+        other.lastname == lastname &&
+        other.age == age &&
+        other.nationality == nationality;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      name.hashCode ^
-      number.hashCode ^
-      pos.hashCode ^
-      grid.hashCode ^
-      photo.hashCode ^
-      firstname.hashCode ^
-      lastname.hashCode ^
-      age.hashCode ^
-      nationality.hashCode;
+        name.hashCode ^
+        number.hashCode ^
+        pos.hashCode ^
+        grid.hashCode ^
+        photo.hashCode ^
+        firstname.hashCode ^
+        lastname.hashCode ^
+        age.hashCode ^
+        nationality.hashCode;
   }
 }
