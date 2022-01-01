@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:api_football/Models/coach.dart';
+import 'package:api_football/Models/historique_model.dart';
 import 'package:api_football/Models/league.dart';
 import 'package:api_football/Models/team.dart';
 import 'package:api_football/Utils/api.dart';
@@ -8,6 +9,7 @@ import 'package:api_football/Utils/convertion.dart';
 import 'package:api_football/Widgets/constants/loading.dart';
 import 'package:flutter/material.dart';
 import "package:get/get.dart";
+import 'package:hive/hive.dart';
 
 List<Coach> _initCoachs = [];
 RxList<dynamic> _coaches = [].obs;
@@ -149,7 +151,17 @@ class coachItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Box box = Hive.box('historique');
+
+          if (!box.values.any((element) => element.name == coach.name)) {
+            box.add(HistoriqueModel(
+                image: coach.photo,
+                name: coach.name,
+                route: "/coachs/" + coach.id.toString()));
+          }
+          Get.toNamed("/coachs/" + coach.id.toString());
+        },
         radius: 50,
         borderRadius: BorderRadius.circular(10),
         child: Padding(

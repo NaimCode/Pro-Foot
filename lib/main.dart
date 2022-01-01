@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:api_football/Routes/Coachs/coach_detail.dart';
 import 'package:api_football/Routes/verus/404.dart';
 import 'package:api_football/Routes/Championants/championants.dart';
 import 'package:api_football/Routes/Coachs/coachs.dart';
@@ -73,6 +74,12 @@ class Main extends StatelessWidget {
         GetPage(
           name: "/coaches",
           page: () => const Root(page: CoachsPage()),
+          transition: Transition.leftToRight,
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+        GetPage(
+          name: "/coachs/:id",
+          page: () => const Root(page: CoachDetail()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),

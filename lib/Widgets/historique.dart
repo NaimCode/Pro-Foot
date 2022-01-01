@@ -15,7 +15,6 @@ class Historique extends StatelessWidget {
     return ValueListenableBuilder<Box>(
         valueListenable: Hive.box('historique').listenable(),
         builder: (context, box, widget) {
-          print(box.toMap());
           return Container(
               width: 300,
               padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
@@ -38,7 +37,10 @@ class Historique extends StatelessWidget {
                           "Historique",
                           style: Theme.of(context).textTheme.headline6!,
                         ),
-                        const Icon(Icons.history)
+                        IconButton(
+                            tooltip: "Effacer l'historique",
+                            onPressed: Hive.box("historique").clear,
+                            icon: const Icon(Icons.history))
                       ],
                     ),
                   ),
@@ -56,6 +58,7 @@ class Historique extends StatelessWidget {
                               ),
                             ))
                         : ListView.builder(
+                            controller: ScrollController(),
                             itemCount: box.length,
                             itemBuilder: (context, index) =>
                                 HistoriqueItem(historique: box.get(index))),
@@ -91,7 +94,9 @@ class HistoriqueItem extends StatelessWidget {
               ),
               CircleAvatar(
                 radius: 30,
-                backgroundColor: Colors.white70,
+                backgroundColor: historique.image!.contains("coachs")
+                    ? Colors.white
+                    : Colors.white70,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Image.network(

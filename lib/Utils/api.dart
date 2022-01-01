@@ -44,6 +44,10 @@ class API {
         .get(serverUrl + "/fr/coachs", queryParameters: {"search": query});
   }
 
+  Future<Response> getCoachsByID(String query) async {
+    return Dio().get(serverUrl + "/fr/coachs" + query);
+  }
+
   Future<Response> getFixture(int last) async {
     return Dio()
         .get(serverUrl + "/fr/fixtures", queryParameters: {"last": last});
