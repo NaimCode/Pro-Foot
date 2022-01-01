@@ -6,5 +6,5 @@ List<Map> listMenu = [
   {"titre": "Pays", "icon": Icons.flag, "route": "/pays"},
   {"titre": "Championants", "icon": Icons.bar_chart, "route": "/championants"},
   {"titre": "Equipes", "icon": Icons.e_mobiledata, "route": "/equipes"},
-  {"titre": "Coaches", "icon": Icons.person, "route": "/coaches"},
+  {"titre": "Coachs", "icon": Icons.people_alt, "route": "/coaches"},
 ];

@@ -43,7 +43,7 @@ class Main extends StatelessWidget {
       unknownRoute: GetPage(
           name: "/404",
           page: () => const Root(page: PageNotFound()),
-          transition: Transition.leftToRight,
+          transition: Transition.leftToRightWithFade,
           transitionDuration: const Duration(milliseconds: 500)),
       theme: appTheme,
       debugShowCheckedModeBanner: false,
@@ -51,13 +51,13 @@ class Main extends StatelessWidget {
         GetPage(
           name: "/",
           page: () => const Root(page: Home()),
-          transition: Transition.leftToRight,
+          transition: Transition.fadeIn,
           transitionDuration: const Duration(milliseconds: 500),
         ),
         GetPage(
           name: "/home",
           page: () => const Root(page: Home()),
-          transition: Transition.leftToRight,
+          transition: Transition.fadeIn,
           transitionDuration: const Duration(milliseconds: 500),
         ),
         GetPage(
