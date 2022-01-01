@@ -1,8 +1,10 @@
+import 'package:api_football/Models/historique_model.dart';
 import 'package:api_football/Models/primitives/player.dart';
 import 'package:api_football/Utils/api.dart';
 import 'package:api_football/Widgets/constants/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart' as dio;
 import '../../Models/team.dart';
@@ -101,39 +103,52 @@ class playerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      margin: const EdgeInsets.symmetric(vertical: 3),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor.withOpacity(0.4),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Image.network(
-                  coach.photo!,
-                  fit: BoxFit.fitHeight,
+    return InkWell(
+      onTap: () {
+        Box box = Hive.box("historique");
+        if (!box.values.any((element) => element.name == coach.name)) {
+          box.add(HistoriqueModel(
+            name: coach.name,
+            route: "/joueurs/" + coach.id.toString() + "/2021",
+            image: coach.photo,
+          ));
+        }
+        Get.toNamed("/joueurs/" + coach.id.toString() + "/2021");
+      },
+      child: Container(
+        height: 100,
+        margin: const EdgeInsets.symmetric(vertical: 3),
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor.withOpacity(0.4),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Image.network(
+                    coach.photo!,
+                    fit: BoxFit.fitHeight,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              coach.name!,
-              style: Theme.of(context).textTheme.subtitle1,
-            )
-          ],
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                coach.name!,
+                style: Theme.of(context).textTheme.subtitle1,
+              )
+            ],
+          ),
         ),
       ),
     );

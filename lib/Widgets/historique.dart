@@ -94,7 +94,8 @@ class HistoriqueItem extends StatelessWidget {
               ),
               CircleAvatar(
                 radius: 30,
-                backgroundColor: historique.image!.contains("coachs")
+                backgroundColor: historique.image!.contains("coachs") ||
+                        historique.image!.contains("players")
                     ? Colors.white
                     : Colors.white70,
                 child: Padding(

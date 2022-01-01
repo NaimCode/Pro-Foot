@@ -17,7 +17,6 @@ class Player {
   String? weight;
 
   String? dateNaissance;
-
   Player({
     this.id,
     this.name,
@@ -29,6 +28,9 @@ class Player {
     this.lastname,
     this.age,
     this.nationality,
+    this.height,
+    this.weight,
+    this.dateNaissance,
   });
 
   Player copyWith({
@@ -42,6 +44,9 @@ class Player {
     String? lastname,
     int? age,
     String? nationality,
+    String? height,
+    String? weight,
+    String? dateNaissance,
   }) {
     return Player(
       id: id ?? this.id,
@@ -54,6 +59,9 @@ class Player {
       lastname: lastname ?? this.lastname,
       age: age ?? this.age,
       nationality: nationality ?? this.nationality,
+      height: height ?? this.height,
+      weight: weight ?? this.weight,
+      dateNaissance: dateNaissance ?? this.dateNaissance,
     );
   }
 
@@ -69,6 +77,9 @@ class Player {
       'lastname': lastname,
       'age': age,
       'nationality': nationality,
+      'height': height,
+      'weight': weight,
+      'dateNaissance': dateNaissance,
     };
   }
 
@@ -84,6 +95,9 @@ class Player {
       lastname: map['lastname'],
       age: map['age']?.toInt(),
       nationality: map['nationality'],
+      height: map['height'],
+      weight: map['weight'],
+      dateNaissance: map['dateNaissance'],
     );
   }
 
@@ -93,7 +107,7 @@ class Player {
 
   @override
   String toString() {
-    return 'Player(id: $id, name: $name, number: $number, pos: $pos, grid: $grid, photo: $photo, firstname: $firstname, lastname: $lastname, age: $age, nationality: $nationality)';
+    return 'Player(id: $id, name: $name, number: $number, pos: $pos, grid: $grid, photo: $photo, firstname: $firstname, lastname: $lastname, age: $age, nationality: $nationality, height: $height, weight: $weight, dateNaissance: $dateNaissance)';
   }
 
   @override
@@ -110,7 +124,10 @@ class Player {
         other.firstname == firstname &&
         other.lastname == lastname &&
         other.age == age &&
-        other.nationality == nationality;
+        other.nationality == nationality &&
+        other.height == height &&
+        other.weight == weight &&
+        other.dateNaissance == dateNaissance;
   }
 
   @override
@@ -124,6 +141,9 @@ class Player {
         firstname.hashCode ^
         lastname.hashCode ^
         age.hashCode ^
-        nationality.hashCode;
+        nationality.hashCode ^
+        height.hashCode ^
+        weight.hashCode ^
+        dateNaissance.hashCode;
   }
 }

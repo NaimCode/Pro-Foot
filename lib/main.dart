@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:api_football/Routes/Coachs/coach_detail.dart';
+import 'package:api_football/Routes/Player/player_detail.dart';
 import 'package:api_football/Routes/verus/404.dart';
 import 'package:api_football/Routes/Championants/championants.dart';
 import 'package:api_football/Routes/Coachs/coachs.dart';
@@ -86,6 +87,12 @@ class Main extends StatelessWidget {
         GetPage(
           name: "/matchs",
           page: () => const Root(page: Matchs()),
+          transition: Transition.leftToRight,
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+        GetPage(
+          name: "/joueurs/:id/:season",
+          page: () => const Root(page: PlayerDetail()),
           transition: Transition.leftToRight,
           transitionDuration: const Duration(milliseconds: 500),
         ),

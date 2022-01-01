@@ -7,5 +7,4 @@ List<Map> listMenu = [
   {"titre": "Championants", "icon": Icons.bar_chart, "route": "/championants"},
   {"titre": "Equipes", "icon": Icons.e_mobiledata, "route": "/equipes"},
   {"titre": "Coaches", "icon": Icons.person, "route": "/coaches"},
-  {"titre": "Versus", "icon": Icons.alt_route, "route": "/versus"},
 ];

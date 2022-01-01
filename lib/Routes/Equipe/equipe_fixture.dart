@@ -33,7 +33,9 @@ class _EquipeFixtureState extends State<EquipeFixture> {
   @override
   void initState() {
     _leagues.clear();
+
     _fixtures.clear();
+    _filter.value = _Filter.matchs;
     // TODO: implement initState
     super.initState();
   }
