@@ -133,7 +133,7 @@ class Body extends StatelessWidget {
                     controller: ScrollController(),
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 260,
-                        childAspectRatio: m ? 1.1 : 1.2,
+                        childAspectRatio: m ? 1 : 1.2,
                         crossAxisSpacing: m ? 20 : 40,
                         mainAxisSpacing: m ? 20 : 40),
                     itemCount: _coaches.length,

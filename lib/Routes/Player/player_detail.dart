@@ -55,7 +55,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
                     PlayerStatistic.fromMap(snapshot.data!.data.first);
                 return const Body();
               }
-              return const Text('Erreur');
+              return const Error();
             });
   }
 }
@@ -65,24 +65,39 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: ListView(controller: ScrollController(), children: [
+        !m
+            ? const SizedBox()
+            : CircleAvatar(
+                radius: 80,
+                backgroundColor: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: Image.network(_playerStatistic!.player!.photo!),
+                )),
+        SizedBox(
+          height: m ? 10 : 0,
+        ),
         Container(
           decoration: BoxDecoration(
               color: Theme.of(context).primaryColor.withOpacity(0.5),
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(90),
-                  bottomLeft: Radius.circular(90))),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(m ? 10 : 90),
+                  bottomLeft: Radius.circular(m ? 10 : 90))),
           child: Row(
             children: [
-              CircleAvatar(
-                  radius: 80,
-                  backgroundColor: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: Image.network(_playerStatistic!.player!.photo!),
-                  )),
+              m
+                  ? const SizedBox()
+                  : CircleAvatar(
+                      radius: 80,
+                      backgroundColor: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: Image.network(_playerStatistic!.player!.photo!),
+                      )),
               Expanded(
                 child: Container(
                   padding:
@@ -183,7 +198,7 @@ class Body extends StatelessWidget {
                                 .cast<Trophie>();
                           }
                           if (snap.hasError) {
-                            print(snap.error);
+                            return const SizedBox(height: 300, child: Error());
                           }
 
                           return const TrophieCoach();
@@ -207,7 +222,7 @@ class Body extends StatelessWidget {
                                 .cast<Sidelined>();
                           }
                           if (snap.hasError) {
-                            print(snap.error);
+                            return const SizedBox(height: 300, child: Error());
                           }
                           return const SidelinedCoach();
                         }))
@@ -221,6 +236,7 @@ class Statistics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Center(
       child: SingleChildScrollView(
         key: GlobalKey(),
@@ -228,23 +244,32 @@ class Statistics extends StatelessWidget {
         controller: ScrollController(),
         child: Center(
           child: DataTable(
+              columnSpacing: m ? 10 : null,
               showCheckboxColumn: false,
-              columns: const [
-                DataColumn(label: ColumnItem(text: "Ligue"), numeric: false),
-                DataColumn(label: ColumnItem(text: "Equipe")),
-                DataColumn(label: ColumnItem(text: "Matchs"), numeric: true),
-                DataColumn(label: ColumnItem(text: "Buts"), numeric: true),
-                DataColumn(label: ColumnItem(text: "Tirs"), numeric: true),
+              columns: [
+                const DataColumn(
+                    label: ColumnItem(text: "Ligue"), numeric: false),
+                const DataColumn(label: ColumnItem(text: "Equipe")),
+                const DataColumn(
+                    label: ColumnItem(text: "Matchs"), numeric: true),
+                const DataColumn(
+                    label: ColumnItem(text: "Buts"), numeric: true),
+                const DataColumn(
+                    label: ColumnItem(text: "Tirs"), numeric: true),
                 DataColumn(
-                    label: ColumnItem(text: "Cartons jaunes"), numeric: true),
+                    label: ColumnItem(text: m ? "Jaunes" : "Cartons jaunes"),
+                    numeric: true),
                 // DataColumn(
                 //     label: ColumnItem(text: "Marqués"), numeric: true),
                 // DataColumn(
                 //     label: ColumnItem(text: "Encaissés"), numeric: true),
                 DataColumn(
-                    label: ColumnItem(text: "Cartons rouges"), numeric: true),
-                DataColumn(label: ColumnItem(text: "Dribles"), numeric: true),
-                DataColumn(label: ColumnItem(text: "Tacles"), numeric: true),
+                    label: ColumnItem(text: m ? "Rouges" : "Cartons rouges"),
+                    numeric: true),
+                const DataColumn(
+                    label: ColumnItem(text: "Dribles"), numeric: true),
+                const DataColumn(
+                    label: ColumnItem(text: "Tacles"), numeric: true),
               ],
               rows: _playerStatistic!.statisticPlayers!
                   .map((e) => DataRow(
@@ -312,6 +337,7 @@ class SidelinedCoach extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return ListView(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -327,16 +353,22 @@ class SidelinedCoach extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        const SizedBox(
-                          width: 10,
+                        SizedBox(
+                          width: m ? 3 : 10,
                         ),
                         Expanded(
-                          flex: 3,
+                          flex: m ? 2 : 3,
                           child: Row(
                             children: [
-                              Text(
-                                e.type!,
-                                style: Theme.of(context).textTheme.subtitle1,
+                              Flexible(
+                                child: Text(
+                                  e.type!.trimLeft(),
+                                  //  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1!
+                                      .copyWith(fontSize: m ? 14 : null),
+                                ),
                               ),
                             ],
                           ),
@@ -352,8 +384,10 @@ class SidelinedCoach extends StatelessWidget {
                                 children: [
                                   Text(
                                     e.start!,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1!
+                                        .copyWith(fontSize: m ? 14 : null),
                                   ),
                                   const SizedBox(
                                     height: 4,
@@ -382,8 +416,10 @@ class SidelinedCoach extends StatelessWidget {
                                 children: [
                                   Text(
                                     e.end!,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1!
+                                        .copyWith(fontSize: m ? 14 : null),
                                   ),
                                   const SizedBox(
                                     height: 4,

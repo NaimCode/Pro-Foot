@@ -128,7 +128,9 @@ class _BodyStatistiqueState extends State<BodyStatistique> {
                     .cast<League>();
                 _leagueSelected.value = 0;
               }
-
+              if (snapshot.hasError) {
+                return const Error();
+              }
               return Scaffold(
                   appBar: AppBar(
                       automaticallyImplyLeading: false,
@@ -153,6 +155,7 @@ class LeagueTeam extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: Obx(
           () => Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: _leagues
                 .map((e) => Padding(
                     padding: const EdgeInsets.only(right: 10),
@@ -271,6 +274,9 @@ class MatchFixture extends StatelessWidget {
                     .cast<Fixture>();
                 //  fixtures = fixtures;
                 _fixtures.sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
+              }
+              if (snapshot.hasError) {
+                return const Error();
               }
               return ListView.builder(
                   controller: ScrollController(),
@@ -1147,9 +1153,8 @@ class _TeamStateState extends State<TeamState> {
                 ),
               );
             }
-            return const Center(
-              child: Text("Erreur"),
-            );
+
+            return const Error();
           },
         ));
   }

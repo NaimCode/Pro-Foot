@@ -26,7 +26,17 @@ List<Sidelined> _sidelined = [];
 
 class _CoachDetailState extends State<CoachDetail> {
   @override
+  void initState() {
+    // TODO: implement initState
+    _trophies.clear();
+    _sidelined.clear();
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return FutureBuilder<dio.Response>(
         future: API().getCoachsByID("?id=" + Get.parameters['id']!),
         builder: (context, snapshot) {
@@ -40,21 +50,33 @@ class _CoachDetailState extends State<CoachDetail> {
               child: ListView(
                 controller: ScrollController(),
                 children: [
+                  !m
+                      ? const SizedBox()
+                      : CircleAvatar(
+                          radius: 80,
+                          backgroundColor: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(30.0),
+                            child: Image.network(coach.photo!),
+                          )),
+                  SizedBox(height: m ? 10 : 0),
                   Container(
                     decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor.withOpacity(0.5),
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(90),
-                            bottomLeft: Radius.circular(90))),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(m ? 10 : 90),
+                            bottomLeft: Radius.circular(m ? 10 : 90))),
                     child: Row(
                       children: [
-                        CircleAvatar(
-                            radius: 80,
-                            backgroundColor: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.all(30.0),
-                              child: Image.network(coach.photo!),
-                            )),
+                        m
+                            ? const SizedBox()
+                            : CircleAvatar(
+                                radius: 80,
+                                backgroundColor: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(30.0),
+                                  child: Image.network(coach.photo!),
+                                )),
                         Expanded(
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -87,7 +109,8 @@ class _CoachDetailState extends State<CoachDetail> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 40, bottom: 20),
+                    padding:
+                        EdgeInsets.only(top: m ? 20 : 40, bottom: m ? 10 : 20),
                     child: Row(
                       children: [
                         TextButton(
@@ -163,7 +186,8 @@ class _CoachDetailState extends State<CoachDetail> {
                                           .cast<Trophie>();
                                     }
                                     if (snap.hasError) {
-                                      print(snap.error);
+                                      return const SizedBox(
+                                          height: 300, child: Error());
                                     }
                                     return const TrophieCoach();
                                   })
@@ -187,7 +211,8 @@ class _CoachDetailState extends State<CoachDetail> {
                                           .cast<Sidelined>();
                                     }
                                     if (snap.hasError) {
-                                      print(snap.error);
+                                      return const SizedBox(
+                                          height: 300, child: Error());
                                     }
                                     return const SidelinedCoach();
                                   }))
@@ -196,9 +221,7 @@ class _CoachDetailState extends State<CoachDetail> {
             );
           }
 
-          return const Center(
-            child: Text("Erreur"),
-          );
+          return const Error();
         });
   }
 }
@@ -427,6 +450,7 @@ class teamItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool m = MediaQuery.of(context).size.width <= 450;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 3),
@@ -452,33 +476,63 @@ class teamItem extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: m ? 5 : 10,
               ),
               Expanded(
-                flex: 3,
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.white70,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Image.network(
-                          career.team!.logo!,
-                          fit: BoxFit.fitHeight,
-                        ),
+                flex: m ? 2 : 3,
+                child: m
+                    ? Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Colors.white70,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Image.network(
+                                career.team!.logo!,
+                                fit: BoxFit.fitHeight,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Flexible(
+                            child: Text(
+                              career.team!.name!,
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(fontSize: m ? 13 : null),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Colors.white70,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Image.network(
+                                career.team!.logo!,
+                                fit: BoxFit.fitHeight,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 30,
+                          ),
+                          Text(
+                            career.team!.name!,
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(
-                      width: 30,
-                    ),
-                    Text(
-                      career.team!.name!,
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                  ],
-                ),
               ),
               Expanded(
                 flex: 2,
@@ -490,7 +544,10 @@ class teamItem extends StatelessWidget {
                       children: [
                         Text(
                           career.start!,
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1!
+                              .copyWith(fontSize: m ? 12 : null),
                         ),
                         const SizedBox(
                           height: 4,
@@ -520,7 +577,10 @@ class teamItem extends StatelessWidget {
                             children: [
                               Text(
                                 career.end!,
-                                style: Theme.of(context).textTheme.subtitle1,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(fontSize: m ? 12 : null),
                               ),
                               const SizedBox(
                                 height: 4,

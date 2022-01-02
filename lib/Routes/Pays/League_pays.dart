@@ -41,7 +41,9 @@ class _LeagueCountryState extends State<LeagueCountry> {
                 .toList()
                 .cast<Country>();
           }
-
+          if (snapshot.hasError) {
+            return const Error();
+          }
           return FutureBuilder<dio.Response>(
               future: api.getLiguesByQuery(countries.isEmpty
                   ? "?country=2"
@@ -77,24 +79,28 @@ class _LeagueCountryState extends State<LeagueCountry> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  LeagueContainer(
-                                    leagues: _leagues
-                                        .where((l) =>
-                                            l.league_v1!.type == "League")
-                                        .toList(growable: false)
-                                        .cast(),
-                                    title: "Ligues",
+                                  Expanded(
+                                    child: LeagueContainer(
+                                      leagues: _leagues
+                                          .where((l) =>
+                                              l.league_v1!.type == "League")
+                                          .toList(growable: false)
+                                          .cast(),
+                                      title: "Ligues",
+                                    ),
                                   ),
                                   const SizedBox(
                                     width: 40,
                                   ),
-                                  LeagueContainer(
-                                    leagues: _leagues
-                                        .where(
-                                            (l) => l.league_v1!.type == "Cup")
-                                        .toList(growable: false)
-                                        .cast<League>(),
-                                    title: "Coupes",
+                                  Expanded(
+                                    child: LeagueContainer(
+                                      leagues: _leagues
+                                          .where(
+                                              (l) => l.league_v1!.type == "Cup")
+                                          .toList(growable: false)
+                                          .cast<League>(),
+                                      title: "Coupes",
+                                    ),
                                   ),
                                 ],
                               ),

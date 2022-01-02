@@ -38,6 +38,9 @@ class _BodyPlayersState extends State<BodyPlayers> {
                 .cast<Player>();
             pageTotal = snapshot.data!.data['page'];
           }
+          if (snapshot.hasError) {
+            return const Error();
+          }
           return Scaffold(
             bottomNavigationBar: Container(
               padding:
@@ -86,7 +89,7 @@ class _BodyPlayersState extends State<BodyPlayers> {
                   controller: ScrollController(),
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 260,
-                      childAspectRatio: m ? 1.1 : 1.2,
+                      childAspectRatio: m ? 1 : 1.2,
                       crossAxisSpacing: m ? 20 : 40,
                       mainAxisSpacing: m ? 20 : 40),
                   itemCount: players.length,

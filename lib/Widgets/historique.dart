@@ -82,6 +82,7 @@ class HistoriqueItem extends StatelessWidget {
   Widget build(BuildContext context) {
     bool m = MediaQuery.of(context).size.width <= 450;
     return Container(
+      margin: EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor.withOpacity(0.4),
         borderRadius: BorderRadius.circular(10),

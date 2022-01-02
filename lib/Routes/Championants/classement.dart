@@ -46,7 +46,7 @@ class _BodyClassementState extends State<BodyClassement> {
                         controller: ScrollController(),
                         child: Center(
                           child: DataTable(
-                              columnSpacing: m ? 10 : 0,
+                              columnSpacing: m ? 10 : null,
                               horizontalMargin: 20,
                               showCheckboxColumn: false,
                               columns: [
@@ -177,7 +177,8 @@ class _BodyClassementState extends State<BodyClassement> {
               ),
             ));
           }
-          return const LoadingPage();
+
+          return const Error();
         });
   }
 }

@@ -94,6 +94,9 @@ class _MatchsState extends State<Matchs> {
                       .cast<Fixture>();
                   fixtures.sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
                 }
+                if (snapshot.hasError) {
+                  return const Error();
+                }
                 return ListView.builder(
                     controller: ScrollController(),
                     itemCount: fixtures.length,

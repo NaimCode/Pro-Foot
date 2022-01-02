@@ -29,6 +29,29 @@ class LoadingPage extends StatelessWidget {
   }
 }
 
+class Error extends StatelessWidget {
+  const Error({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: SizedBox(
+            width: 400,
+            child: Text(
+              "Erreur de chargement, soit votre connexion soit le nombre de requêtes a été atteint",
+              style: TextStyle(color: Colors.red[200], fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class Laoding extends StatelessWidget {
   const Laoding({Key? key}) : super(key: key);
 
