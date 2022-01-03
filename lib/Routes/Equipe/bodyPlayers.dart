@@ -46,13 +46,15 @@ class _BodyPlayersState extends State<BodyPlayers> {
               padding:
                   EdgeInsets.symmetric(vertical: 10, horizontal: m ? 30 : 0),
               height: 60,
-              child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                const Expanded(
-                    child: Opacity(
-                        opacity: 0.5,
-                        child: Text(
-                          "page",
-                        ))),
+              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                m
+                    ? const SizedBox()
+                    : const Expanded(
+                        child: Opacity(
+                            opacity: 0.5,
+                            child: Text(
+                              "page",
+                            ))),
                 ...List.generate(
                     pageTotal,
                     (index) => InkWell(
@@ -89,7 +91,7 @@ class _BodyPlayersState extends State<BodyPlayers> {
                   controller: ScrollController(),
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 260,
-                      childAspectRatio: m ? 1 : 1.2,
+                      childAspectRatio: m ? 0.8 : 1.2,
                       crossAxisSpacing: m ? 20 : 40,
                       mainAxisSpacing: m ? 20 : 40),
                   itemCount: players.length,
@@ -129,6 +131,7 @@ class playerItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const SizedBox(
                 height: 10,
@@ -147,9 +150,11 @@ class playerItem extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                coach.name!,
-                style: Theme.of(context).textTheme.subtitle1,
+              Flexible(
+                child: Text(
+                  coach.name!,
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
               )
             ],
           ),

@@ -312,9 +312,11 @@ class LeagueItem extends StatelessWidget {
               const SizedBox(
                 width: 30,
               ),
-              Text(
-                league.league_v1!.name!,
-                style: Theme.of(context).textTheme.subtitle1,
+              Flexible(
+                child: Text(
+                  league.league_v1!.name!,
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
               )
             ],
           ),

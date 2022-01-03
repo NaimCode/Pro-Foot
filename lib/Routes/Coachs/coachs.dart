@@ -133,7 +133,7 @@ class Body extends StatelessWidget {
                     controller: ScrollController(),
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 260,
-                        childAspectRatio: m ? 1 : 1.2,
+                        childAspectRatio: m ? 0.8 : 1.2,
                         crossAxisSpacing: m ? 20 : 40,
                         mainAxisSpacing: m ? 20 : 40),
                     itemCount: _coaches.length,
@@ -173,6 +173,7 @@ class coachItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const SizedBox(
                 height: 10,
@@ -191,9 +192,11 @@ class coachItem extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                coach.name!,
-                style: Theme.of(context).textTheme.subtitle1,
+              Flexible(
+                child: Text(
+                  coach.name!,
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
               )
             ],
           ),
