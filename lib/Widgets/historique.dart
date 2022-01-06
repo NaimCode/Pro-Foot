@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
+import "dart:io" show Platform;
 
 class Historique extends StatelessWidget {
   const Historique({
@@ -106,7 +107,11 @@ class HistoriqueItem extends StatelessWidget {
                     : Colors.white70,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: m && historique.image!.contains("svg")
+                  child: (Platform.isIOS ||
+                              Platform.isMacOS ||
+                              Platform.isWindows ||
+                              Platform.isAndroid) &&
+                          historique.image!.contains("svg")
                       ? SvgPicture.network(
                           historique.image!,
                           fit: BoxFit.fitHeight,

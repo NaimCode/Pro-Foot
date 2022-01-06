@@ -1,5 +1,6 @@
 import 'package:api_football/Models/country.dart';
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 
 class CountryItem extends StatelessWidget {
   final Country country;

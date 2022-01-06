@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'dart:io' show Platform;
 
 List<String> _paysRecommandation = [
   "Belgique",
@@ -211,7 +212,10 @@ class countryiItem extends StatelessWidget {
                 backgroundColor: Colors.white70,
                 child: Padding(
                   padding: EdgeInsets.all(m ? 15 : 10.0),
-                  child: m
+                  child: Platform.isWindows ||
+                          Platform.isMacOS ||
+                          Platform.isIOS ||
+                          Platform.isAndroid
                       ? SvgPicture.network(
                           league.flag!,
                           fit: BoxFit.fitHeight,
