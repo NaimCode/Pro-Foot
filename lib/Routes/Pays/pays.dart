@@ -1,6 +1,7 @@
 import 'package:api_football/Models/country.dart';
 import 'package:api_football/Models/historique_model.dart';
 import 'package:api_football/Utils/convertion.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -212,10 +213,7 @@ class countryiItem extends StatelessWidget {
                 backgroundColor: Colors.white70,
                 child: Padding(
                   padding: EdgeInsets.all(m ? 15 : 10.0),
-                  child: Platform.isWindows ||
-                          Platform.isMacOS ||
-                          Platform.isIOS ||
-                          Platform.isAndroid
+                  child: !kIsWeb
                       ? SvgPicture.network(
                           league.flag!,
                           fit: BoxFit.fitHeight,

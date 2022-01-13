@@ -1,5 +1,6 @@
 import 'package:api_football/Models/historique_model.dart';
 import 'package:api_football/Widgets/page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -107,11 +108,7 @@ class HistoriqueItem extends StatelessWidget {
                     : Colors.white70,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: (Platform.isIOS ||
-                              Platform.isMacOS ||
-                              Platform.isWindows ||
-                              Platform.isAndroid) &&
-                          historique.image!.contains("svg")
+                  child: !kIsWeb && historique.image!.contains("svg")
                       ? SvgPicture.network(
                           historique.image!,
                           fit: BoxFit.fitHeight,

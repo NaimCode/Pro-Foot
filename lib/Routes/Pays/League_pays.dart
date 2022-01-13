@@ -42,6 +42,7 @@ class _LeagueCountryState extends State<LeagueCountry> {
                 .cast<Country>();
           }
           if (snapshot.hasError) {
+            print(snapshot.error);
             return const Error();
           }
           return FutureBuilder<dio.Response>(
