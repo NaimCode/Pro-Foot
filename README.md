@@ -1,4 +1,6 @@
 # PRO FOOT
+Introducing a cross-platform football application that brings you comprehensive access to match results, rankings, and more. Stay connected to the world of football like never before, no matter which device you're using. With this app, you'll have all the information you need right at your fingertips, making sure you never miss a beat when it comes to the exciting world of football.
+
 <img src="https://res.cloudinary.com/ob2a/image/upload/v1692178441/Picture1_wm9sck.png" alt="alt text" width="whatever" height="whatever">
 
 ## Desktop Demo
