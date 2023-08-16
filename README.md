@@ -1,21 +1,17 @@
 # PRO FOOT
 <img src="https://res.cloudinary.com/ob2a/image/upload/v1692178441/Picture1_wm9sck.png" alt="alt text" width="whatever" height="whatever">
 
+## Desktop Demo
+
+
+https://github.com/NaimCode/Pro-Foot/assets/73735806/d72d9e8a-07cb-4189-82bd-8759d98525c2
+
+
+
+https://github.com/NaimCode/Pro-Foot/assets/73735806/7f7ce3e8-33eb-4cff-85e7-23abb2d52335
 
 ## Mobile Demo
 
-| Video 1  | Video 2 |
-| ------------- | ------------- |
-| <video src="https://res.cloudinary.com/ob2a/video/upload/v1692178443/profoot-d-2_nu0myf.mp4">  | <video src="https://res.cloudinary.com/ob2a/video/upload/v1692178443/profoot-d-2_nu0myf.mp4">|
 
-This project is a starting point for a Flutter application.
+https://github.com/NaimCode/Pro-Foot/assets/73735806/31fbf503-895f-42aa-bdbb-ebe2af4407bf
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# Mini_Projet_Frontend
